@@ -1,5 +1,6 @@
 # AngelinaISAssistant
-initial commit.Chinese version.
+
+[简体中文](README.md) / [English](README_en.md)
 
 ## Angelina Integrated Strategies Assistant
 
