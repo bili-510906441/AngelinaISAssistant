@@ -1,6 +1,6 @@
 # AngelinaISAssistant
 
-[简体中文](https://github.com/bili-510906441/AngelinaISAssistant/main/README.md) / [English](https://github.com/bili-510906441/AngelinaISAssistant/main/README_en.md)
+[简体中文](https://github.com/bili-510906441/AngelinaISAssistant/blob/main/README.md) / [English](https://github.com/bili-510906441/AngelinaISAssistant/blob/main/README_en.md)
 
 ## Angelina Integrated Strategies Assistant
 
