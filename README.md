@@ -21,6 +21,7 @@ Angelina的意思是Angelina Integrated Strategies Assistant
 ## 开源库
 
 图像识别库：[opencv](https://github.com/opencv/opencv)
+
 增量更新算法：[HDiffPatch](https://github.com/sisong/HDiffPatch)
 
 ## 广告
