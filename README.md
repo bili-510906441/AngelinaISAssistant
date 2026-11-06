@@ -1,10 +1,12 @@
 # AngelinaISAssistant
 
-[简体中文](README.md) / [English](README_en.md)
+[简体中文](https://github.com/bili-510906441/AngelinaISAssistant/main/README.md) / [English](https://github.com/bili-510906441/AngelinaISAssistant/main/README_en.md)
 
 ## Angelina Integrated Strategies Assistant
 
-Angelina是一款明日方舟集成战略小助手
+Angelina的意思是Angelina Integrated Strategies Assistant
+
+一款明日方舟集成战略小助手
 
 基于图像识别技术，一键开始你的“学院派”集成战略！
 
