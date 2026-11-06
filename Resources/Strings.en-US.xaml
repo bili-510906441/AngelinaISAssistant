@@ -1,0 +1,172 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- App name (window title) -->
+    <sys:String x:Key="Str.App.Name">AngelinaISAssistant</sys:String>
+
+    <!-- Caption buttons -->
+
+    <!-- Top tabs -->
+    <sys:String x:Key="Str.TabQuery">Quick Query</sys:String>
+    <sys:String x:Key="Str.TabLive">Live Assist</sys:String>
+    <sys:String x:Key="Str.TabLog">Output Log</sys:String>
+    <sys:String x:Key="Str.TabSettings">Settings</sys:String>
+
+    <!-- Quick query -->
+    <sys:String x:Key="Str.Query.Title">Quick Query</sys:String>
+    <sys:String x:Key="Str.Query.Subtitle">Choose the Integrated Strategies theme for this run.</sys:String>
+    <sys:String x:Key="Str.Query.EmptyState">No results yet</sys:String>
+    <sys:String x:Key="Str.Query.EmptyHint">Type an operator, collectible, or event name above, then click Query</sys:String>
+    <sys:String x:Key="Str.Query.Button">Query</sys:String>
+
+    <!-- Theme picker -->
+    <sys:String x:Key="Str.Query.PickTheme">Choose an Integrated Strategies theme</sys:String>
+    <sys:String x:Key="Str.Query.Selected">Selected theme</sys:String>
+    <sys:String x:Key="Str.Query.Back">← Back</sys:String>
+    <sys:String x:Key="Str.Filter.All">All</sys:String>
+    <sys:String x:Key="Str.Filter.Boss">BOSS</sys:String>
+    <sys:String x:Key="Str.Filter.Elite">Elite</sys:String>
+    <sys:String x:Key="Str.Type.Normal">Normal battle</sys:String>
+    <sys:String x:Key="Str.Type.Ending">Ending battle</sys:String>
+    <sys:String x:Key="Str.Type.Pursuit">Pursuit</sys:String>
+    <sys:String x:Key="Str.Type.Event">Event battle</sys:String>
+    <sys:String x:Key="Str.Layer.N">Layer {0}</sys:String>
+    <sys:String x:Key="Str.Layer.Any">Any layer</sys:String>
+    <sys:String x:Key="Str.Difficulty">Difficulty</sys:String>
+    <sys:String x:Key="Str.Hub.Maps">Maps</sys:String>
+    <sys:String x:Key="Str.Hub.Collectibles">Collectibles</sys:String>
+    <sys:String x:Key="Str.Hub.Operators">Operators</sys:String>
+    <sys:String x:Key="Str.Feature.Unsupported">Not supported yet</sys:String>
+    <sys:String x:Key="Str.Note.Button">Notebook</sys:String>
+    <sys:String x:Key="Str.Note.Hint">Write down what you learned about this stage. Each stage keeps its own note.</sys:String>
+    <sys:String x:Key="Str.Note.Save">Save</sys:String>
+    <sys:String x:Key="Str.Note.Saved">Saved</sys:String>
+
+    <sys:String x:Key="Str.Runtime.Title">.NET runtime required</sys:String>
+    <sys:String x:Key="Str.Runtime.Missing">This app requires the .NET 10 Desktop Runtime (Microsoft.WindowsDesktop.App 10.x), which was not found. Please install it and try again.</sys:String>
+    <sys:String x:Key="Str.Runtime.OpenPage">Open the download page now?</sys:String>
+    <sys:String x:Key="Str.Theme.Unsupported">This Integrated Strategies theme is not supported yet</sys:String>
+
+    <sys:String x:Key="Str.Theme.1.Name">PHANTOM &amp; CRIMSON SOLITAIRE</sys:String>
+    <sys:String x:Key="Str.Theme.1.Alt">傀影与猩红孤钻</sys:String>
+    <sys:String x:Key="Str.Theme.2.Name">MIZUKI &amp; CAERULA ARBOR</sys:String>
+    <sys:String x:Key="Str.Theme.2.Alt">水月与深蓝之树</sys:String>
+    <sys:String x:Key="Str.Theme.3.Name">EXPEDITIONER'S JǪKLUMARKAR</sys:String>
+    <sys:String x:Key="Str.Theme.3.Alt">探索者的银凇止境</sys:String>
+    <sys:String x:Key="Str.Theme.4.Name">SARKAZ'S FURNACE SIDE FABLES</sys:String>
+    <sys:String x:Key="Str.Theme.4.Alt">萨卡兹的无终奇语</sys:String>
+    <sys:String x:Key="Str.Theme.5.Name">SUI'S GARDEN OF GROTESQUERIES</sys:String>
+    <sys:String x:Key="Str.Theme.5.Alt">岁的界园志异</sys:String>
+    <sys:String x:Key="Str.Theme.6.Name">THE BLACK FLOW OF THE DROWNING SEEKERS</sys:String>
+    <sys:String x:Key="Str.Theme.6.Alt">沉沦者的黑流树海</sys:String>
+
+    <!-- Live assist -->
+    <sys:String x:Key="Str.Live.Title">Live Assist</sys:String>
+    <sys:String x:Key="Str.Live.Subtitle">Real-time hints and references during an Integrated Strategies run.</sys:String>
+    <sys:String x:Key="Str.Live.EmptyState">No live information yet</sys:String>
+    <sys:String x:Key="Str.Preview.Title">Screen Preview</sys:String>
+    <sys:String x:Key="Str.Preview.Fps">Preview FPS</sys:String>
+
+    <!-- Output log -->
+    <sys:String x:Key="Str.Log.Title">Output Log</sys:String>
+    <sys:String x:Key="Str.Log.Subtitle">Query and runtime logs appear here in chronological order.</sys:String>
+    <sys:String x:Key="Str.Log.Empty">No log output yet.</sys:String>
+
+    <!-- Settings -->
+    <sys:String x:Key="Str.Settings.Title">Settings</sys:String>
+    <sys:String x:Key="Str.Settings.Search">Search settings</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Connection">Connection</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Update">Updates</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Appearance">Appearance</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Language">Language</sys:String>
+    <sys:String x:Key="Str.SettingsNav.About">About us</sys:String>
+
+    <!-- Connection -->
+    <sys:String x:Key="Str.Connection.Title">Connection</sys:String>
+    <sys:String x:Key="Str.Connection.Subtitle">Configure the data service address, port, and reconnect behavior.</sys:String>
+    <sys:String x:Key="Str.Connection.Server">Server address</sys:String>
+    <sys:String x:Key="Str.Connection.Port">Port</sys:String>
+    <sys:String x:Key="Str.Connection.Behavior">Connection behavior</sys:String>
+    <sys:String x:Key="Str.Connection.AutoReconnect">Reconnect automatically</sys:String>
+    <sys:String x:Key="Str.Connection.AutoReconnectHint">Try to recover when the connection drops.</sys:String>
+    <sys:String x:Key="Str.Connection.Save">Save connection settings</sys:String>
+
+    <!-- Updates -->
+    <sys:String x:Key="Str.Update.Title">Updates</sys:String>
+    <sys:String x:Key="Str.Update.Subtitle">Control automatic update checks and see when the last check ran.</sys:String>
+    <sys:String x:Key="Str.Update.Auto">Check for updates automatically</sys:String>
+    <sys:String x:Key="Str.Update.AutoHint">Check for a new version at startup.</sys:String>
+    <sys:String x:Key="Str.Update.LastCheck">Last check: never</sys:String>
+    <sys:String x:Key="Str.Update.CheckNow">Check now</sys:String>
+    <sys:String x:Key="Str.Update.Checking">Checking…</sys:String>
+    <sys:String x:Key="Str.Update.Latest">You are up to date</sys:String>
+    <sys:String x:Key="Str.Update.Outdated">New version {0}</sys:String>
+    <sys:String x:Key="Str.Update.Failed">Update failed</sys:String>
+    <sys:String x:Key="Str.Update.Apply">Apply update</sys:String>
+    <sys:String x:Key="Str.Update.NetworkError">Network error: no update package available.</sys:String>
+    <sys:String x:Key="Str.Update.Downloading">Downloading update package…</sys:String>
+    <sys:String x:Key="Str.Update.Applying">Applying update…</sys:String>
+    <sys:String x:Key="Str.Update.Restart">Update ready, restarting…</sys:String>
+
+    <!-- Appearance -->
+    <sys:String x:Key="Str.Appearance.Title">Appearance</sys:String>
+    <sys:String x:Key="Str.Appearance.Subtitle">Choose the color scheme; changes apply immediately.</sys:String>
+    <sys:String x:Key="Str.Appearance.Theme">Theme</sys:String>
+    <sys:String x:Key="Str.Appearance.DarkMode">Dark mode</sys:String>
+    <sys:String x:Key="Str.Appearance.Note">The whole window and title bar switch together.</sys:String>
+    <sys:String x:Key="Str.Appearance.AlwaysOnTop">Always on top</sys:String>
+    <sys:String x:Key="Str.Appearance.AlwaysOnTopHint">Keep this window above other windows.</sys:String>
+    <sys:String x:Key="Str.Title.AlwaysOnTop">(AlwaysOnTop)</sys:String>
+
+    <!-- Language -->
+    <sys:String x:Key="Str.Language.Title">Language</sys:String>
+    <sys:String x:Key="Str.Language.Subtitle">Choose the interface language; changes apply immediately.</sys:String>
+    <sys:String x:Key="Str.Language.Label">Language</sys:String>
+    <sys:String x:Key="Str.Language.Hint">Language names are shown in their own language.</sys:String>
+
+    <!-- About -->
+    <sys:String x:Key="Str.About.Title">About us</sys:String>
+    <sys:String x:Key="Str.About.Subtitle">AngelinaISAssistant is a local assistant for Arknights Integrated Strategies.</sys:String>
+    <sys:String x:Key="Str.About.Build">Build: unsigned</sys:String>
+    <sys:String x:Key="Str.About.Version">Version: {0}</sys:String>
+    <sys:String x:Key="Str.About.Platform">Platform: {0}</sys:String>
+    <sys:String x:Key="Str.About.Runtime">Runtime: .NET {0}</sys:String>
+
+    <!-- Runtime status -->
+    <sys:String x:Key="Str.Status.Idle">Not started</sys:String>
+    <sys:String x:Key="Str.Status.Capturing">Capturing · full screen {0}×{1}</sys:String>
+    <sys:String x:Key="Str.Status.Stopped">Stopped</sys:String>
+    <sys:String x:Key="Str.Status.Unsupported">Not supported</sys:String>
+    <sys:String x:Key="Str.Status.Failed">Failed to start</sys:String>
+    <sys:String x:Key="Str.Status.Interrupted">Capture interrupted</sys:String>
+    <sys:String x:Key="Str.Theme.Dark">Current: dark</sys:String>
+    <sys:String x:Key="Str.Theme.Light">Current: light</sys:String>
+
+    <!-- Error dialog -->
+    <sys:String x:Key="Str.Error.WindowTitle">AngelinaISAssistant - Error</sys:String>
+    <sys:String x:Key="Str.Error.Headline">Something went wrong</sys:String>
+    <sys:String x:Key="Str.Error.Copy">Copy error</sys:String>
+    <sys:String x:Key="Str.Error.Copied">Copied</sys:String>
+    <sys:String x:Key="Str.Error.CopyFailed">Copy failed</sys:String>
+    <sys:String x:Key="Str.Error.Close">Close</sys:String>
+    <sys:String x:Key="Str.Error.CaptureStart">Screen capture failed to start</sys:String>
+    <sys:String x:Key="Str.Error.CaptureInterrupted">Screen capture interrupted</sys:String>
+
+    <sys:String x:Key="Str.Error.AccessDenied">The system denied screen capture (E_ACCESSDENIED). This app needs administrator rights to create a capture item, so make sure the UAC prompt is allowed.</sys:String>
+    <sys:String x:Key="Str.Error.InvalidArgument">A parameter was rejected, usually the monitor handle. The display may have just changed; try again or restart the app.</sys:String>
+    <sys:String x:Key="Str.Error.Fail">The system returned an unspecified failure (E_FAIL).</sys:String>
+    <sys:String x:Key="Str.Error.InvalidOperation">The operation is not valid in the current state.</sys:String>
+    <sys:String x:Key="Str.Error.Unknown">An unexpected error occurred.</sys:String>
+
+    <sys:String x:Key="Str.Error.Time">Time: {0}</sys:String>
+    <sys:String x:Key="Str.Error.Version">Version: {0}</sys:String>
+    <sys:String x:Key="Str.Error.Platform">Platform: {0}</sys:String>
+    <sys:String x:Key="Str.Error.Runtime">Runtime: {0}</sys:String>
+    <sys:String x:Key="Str.Error.Exception">Exception: {0}</sys:String>
+    <sys:String x:Key="Str.Error.HResult">HRESULT: {0}</sys:String>
+    <sys:String x:Key="Str.Error.Message">Message: {0}</sys:String>
+    <sys:String x:Key="Str.Error.Chain">--- Exception chain ---</sys:String>
+    <sys:String x:Key="Str.Error.Stack">--- Stack trace ---</sys:String>
+
+</ResourceDictionary>

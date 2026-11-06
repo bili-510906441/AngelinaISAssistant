@@ -1,0 +1,172 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- 应用名（窗口标题） -->
+    <sys:String x:Key="Str.App.Name">安洁莉娜集成战略小助手</sys:String>
+
+    <!-- 标题栏按钮 -->
+
+    <!-- 顶部栏目 -->
+    <sys:String x:Key="Str.TabQuery">一键查询</sys:String>
+    <sys:String x:Key="Str.TabLive">实时辅助</sys:String>
+    <sys:String x:Key="Str.TabLog">输出日志</sys:String>
+    <sys:String x:Key="Str.TabSettings">设置</sys:String>
+
+    <!-- 一键查询 -->
+    <sys:String x:Key="Str.Query.Title">一键查询</sys:String>
+    <sys:String x:Key="Str.Query.Subtitle">选择本次对局使用的集成战略主题。</sys:String>
+    <sys:String x:Key="Str.Query.EmptyState">还没有查询结果</sys:String>
+    <sys:String x:Key="Str.Query.EmptyHint">在上方输入干员名、收藏品名或事件名后点击查询</sys:String>
+    <sys:String x:Key="Str.Query.Button">查询</sys:String>
+
+    <!-- 主题选择 -->
+    <sys:String x:Key="Str.Query.PickTheme">选择集成战略主题</sys:String>
+    <sys:String x:Key="Str.Query.Selected">已选主题</sys:String>
+    <sys:String x:Key="Str.Query.Back">← 返回</sys:String>
+    <sys:String x:Key="Str.Filter.All">全部</sys:String>
+    <sys:String x:Key="Str.Filter.Boss">BOSS</sys:String>
+    <sys:String x:Key="Str.Filter.Elite">精英</sys:String>
+    <sys:String x:Key="Str.Type.Normal">普通战斗</sys:String>
+    <sys:String x:Key="Str.Type.Ending">结局作战</sys:String>
+    <sys:String x:Key="Str.Type.Pursuit">追猎</sys:String>
+    <sys:String x:Key="Str.Type.Event">事件作战</sys:String>
+    <sys:String x:Key="Str.Layer.N">{0}层</sys:String>
+    <sys:String x:Key="Str.Layer.Any">任意层</sys:String>
+    <sys:String x:Key="Str.Difficulty">难度选择</sys:String>
+    <sys:String x:Key="Str.Hub.Maps">地图</sys:String>
+    <sys:String x:Key="Str.Hub.Collectibles">收藏品</sys:String>
+    <sys:String x:Key="Str.Hub.Operators">干员</sys:String>
+    <sys:String x:Key="Str.Feature.Unsupported">暂不支持</sys:String>
+    <sys:String x:Key="Str.Note.Button">错题本</sys:String>
+    <sys:String x:Key="Str.Note.Hint">记录你对这一关的理解与打法，每个关卡的笔记互相独立保存。</sys:String>
+    <sys:String x:Key="Str.Note.Save">保存</sys:String>
+    <sys:String x:Key="Str.Note.Saved">已保存</sys:String>
+
+    <sys:String x:Key="Str.Runtime.Title">缺少 .NET 运行环境</sys:String>
+    <sys:String x:Key="Str.Runtime.Missing">本程序需要 .NET 10 桌面运行时（Microsoft.WindowsDesktop.App 10.x）才能运行，当前环境没有检测到。请先安装后再启动。</sys:String>
+    <sys:String x:Key="Str.Runtime.OpenPage">是否现在打开下载页面？</sys:String>
+    <sys:String x:Key="Str.Theme.Unsupported">暂不支持这个集成战略主题</sys:String>
+
+    <sys:String x:Key="Str.Theme.1.Name">傀影与猩红孤钻</sys:String>
+    <sys:String x:Key="Str.Theme.1.Alt">PHANTOM &amp; CRIMSON SOLITAIRE</sys:String>
+    <sys:String x:Key="Str.Theme.2.Name">水月与深蓝之树</sys:String>
+    <sys:String x:Key="Str.Theme.2.Alt">MIZUKI &amp; CAERULA ARBOR</sys:String>
+    <sys:String x:Key="Str.Theme.3.Name">探索者的银凇止境</sys:String>
+    <sys:String x:Key="Str.Theme.3.Alt">EXPEDITIONER'S JǪKLUMARKAR</sys:String>
+    <sys:String x:Key="Str.Theme.4.Name">萨卡兹的无终奇语</sys:String>
+    <sys:String x:Key="Str.Theme.4.Alt">SARKAZ'S FURNACE SIDE FABLES</sys:String>
+    <sys:String x:Key="Str.Theme.5.Name">岁的界园志异</sys:String>
+    <sys:String x:Key="Str.Theme.5.Alt">SUI'S GARDEN OF GROTESQUERIES</sys:String>
+    <sys:String x:Key="Str.Theme.6.Name">沉沦者的黑流树海</sys:String>
+    <sys:String x:Key="Str.Theme.6.Alt">THE BLACK FLOW OF THE DROWNING SEEKERS</sys:String>
+
+    <!-- 实时辅助 -->
+    <sys:String x:Key="Str.Live.Title">实时辅助</sys:String>
+    <sys:String x:Key="Str.Live.Subtitle">在集成战略对局过程中，查看实时提示与参考信息。</sys:String>
+    <sys:String x:Key="Str.Live.EmptyState">还没有可显示的实时信息</sys:String>
+    <sys:String x:Key="Str.Preview.Title">屏幕预览</sys:String>
+    <sys:String x:Key="Str.Preview.Fps">预览帧率</sys:String>
+
+    <!-- 输出日志 -->
+    <sys:String x:Key="Str.Log.Title">输出日志</sys:String>
+    <sys:String x:Key="Str.Log.Subtitle">查询与运行过程的日志会按时间顺序显示在这里。</sys:String>
+    <sys:String x:Key="Str.Log.Empty">暂无日志输出。</sys:String>
+
+    <!-- 设置 -->
+    <sys:String x:Key="Str.Settings.Title">设置</sys:String>
+    <sys:String x:Key="Str.Settings.Search">搜索设置</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Connection">连接设置</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Update">更新设置</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Appearance">外观设置</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Language">语言设置</sys:String>
+    <sys:String x:Key="Str.SettingsNav.About">关于我们</sys:String>
+
+    <!-- 连接设置 -->
+    <sys:String x:Key="Str.Connection.Title">连接设置</sys:String>
+    <sys:String x:Key="Str.Connection.Subtitle">配置数据服务地址、端口与断线重连方式。</sys:String>
+    <sys:String x:Key="Str.Connection.Server">服务地址</sys:String>
+    <sys:String x:Key="Str.Connection.Port">端口</sys:String>
+    <sys:String x:Key="Str.Connection.Behavior">连接行为</sys:String>
+    <sys:String x:Key="Str.Connection.AutoReconnect">断线后自动重连</sys:String>
+    <sys:String x:Key="Str.Connection.AutoReconnectHint">连接中断时自动尝试恢复。</sys:String>
+    <sys:String x:Key="Str.Connection.Save">保存连接设置</sys:String>
+
+    <!-- 更新设置 -->
+    <sys:String x:Key="Str.Update.Title">更新设置</sys:String>
+    <sys:String x:Key="Str.Update.Subtitle">控制是否自动检查新版本，以及上次检查的时间。</sys:String>
+    <sys:String x:Key="Str.Update.Auto">自动检查更新</sys:String>
+    <sys:String x:Key="Str.Update.AutoHint">启动时检查是否有新版本可用。</sys:String>
+    <sys:String x:Key="Str.Update.LastCheck">上次检查：尚未检查</sys:String>
+    <sys:String x:Key="Str.Update.CheckNow">立即检查更新</sys:String>
+    <sys:String x:Key="Str.Update.Checking">检查中…</sys:String>
+    <sys:String x:Key="Str.Update.Latest">已是最新版本</sys:String>
+    <sys:String x:Key="Str.Update.Outdated">发现新版本 {0}</sys:String>
+    <sys:String x:Key="Str.Update.Failed">更新失败</sys:String>
+    <sys:String x:Key="Str.Update.Apply">应用更新</sys:String>
+    <sys:String x:Key="Str.Update.NetworkError">网络错误：没有找到可用的更新包。</sys:String>
+    <sys:String x:Key="Str.Update.Downloading">正在下载更新包…</sys:String>
+    <sys:String x:Key="Str.Update.Applying">正在应用更新…</sys:String>
+    <sys:String x:Key="Str.Update.Restart">更新包已就绪，正在重启…</sys:String>
+
+    <!-- 外观设置 -->
+    <sys:String x:Key="Str.Appearance.Title">外观设置</sys:String>
+    <sys:String x:Key="Str.Appearance.Subtitle">选择界面配色，切换后立即生效。</sys:String>
+    <sys:String x:Key="Str.Appearance.Theme">主题</sys:String>
+    <sys:String x:Key="Str.Appearance.DarkMode">深色模式</sys:String>
+    <sys:String x:Key="Str.Appearance.Note">切换后整个窗口与标题栏会一起变化。</sys:String>
+    <sys:String x:Key="Str.Appearance.AlwaysOnTop">始终置顶</sys:String>
+    <sys:String x:Key="Str.Appearance.AlwaysOnTopHint">让窗口保持在其他窗口之上。</sys:String>
+    <sys:String x:Key="Str.Title.AlwaysOnTop">（始终置顶）</sys:String>
+
+    <!-- 语言设置 -->
+    <sys:String x:Key="Str.Language.Title">语言设置</sys:String>
+    <sys:String x:Key="Str.Language.Subtitle">选择界面语言，切换后立即生效。</sys:String>
+    <sys:String x:Key="Str.Language.Label">语言</sys:String>
+    <sys:String x:Key="Str.Language.Hint">语言名称按各自语言显示。</sys:String>
+
+    <!-- 关于 -->
+    <sys:String x:Key="Str.About.Title">关于我们</sys:String>
+    <sys:String x:Key="Str.About.Subtitle">AngelinaISAssistant 是《明日方舟》集成战略的本地小助手。</sys:String>
+    <sys:String x:Key="Str.About.Build">构建：未签名</sys:String>
+    <sys:String x:Key="Str.About.Version">版本：{0}</sys:String>
+    <sys:String x:Key="Str.About.Platform">平台：{0}</sys:String>
+    <sys:String x:Key="Str.About.Runtime">运行时：.NET {0}</sys:String>
+
+    <!-- 运行时状态 -->
+    <sys:String x:Key="Str.Status.Idle">未开始</sys:String>
+    <sys:String x:Key="Str.Status.Capturing">采集中 · 全屏 {0}×{1}</sys:String>
+    <sys:String x:Key="Str.Status.Stopped">已停止</sys:String>
+    <sys:String x:Key="Str.Status.Unsupported">系统不支持</sys:String>
+    <sys:String x:Key="Str.Status.Failed">启动失败</sys:String>
+    <sys:String x:Key="Str.Status.Interrupted">采集中断</sys:String>
+    <sys:String x:Key="Str.Theme.Dark">当前：深色</sys:String>
+    <sys:String x:Key="Str.Theme.Light">当前：浅色</sys:String>
+
+    <!-- 错误窗口 -->
+    <sys:String x:Key="Str.Error.WindowTitle">安洁莉娜集成战略小助手 - 出错了</sys:String>
+    <sys:String x:Key="Str.Error.Headline">出错了</sys:String>
+    <sys:String x:Key="Str.Error.Copy">复制错误</sys:String>
+    <sys:String x:Key="Str.Error.Copied">已复制</sys:String>
+    <sys:String x:Key="Str.Error.CopyFailed">复制失败</sys:String>
+    <sys:String x:Key="Str.Error.Close">关闭</sys:String>
+    <sys:String x:Key="Str.Error.CaptureStart">屏幕采集启动失败</sys:String>
+    <sys:String x:Key="Str.Error.CaptureInterrupted">屏幕采集中断</sys:String>
+
+    <sys:String x:Key="Str.Error.AccessDenied">系统拒绝了屏幕采集权限（E_ACCESSDENIED）。本程序需要管理员权限才能创建采集项，请确认 UAC 提示已被允许。</sys:String>
+    <sys:String x:Key="Str.Error.InvalidArgument">参数无效，显示器句柄未被接受。可能是显示设备刚变更过，稍后重试或重启程序。</sys:String>
+    <sys:String x:Key="Str.Error.Fail">系统返回了未指明的失败（E_FAIL）。</sys:String>
+    <sys:String x:Key="Str.Error.InvalidOperation">操作在当前状态下无效。</sys:String>
+    <sys:String x:Key="Str.Error.Unknown">发生未预期的错误。</sys:String>
+
+    <sys:String x:Key="Str.Error.Time">时间：{0}</sys:String>
+    <sys:String x:Key="Str.Error.Version">版本：{0}</sys:String>
+    <sys:String x:Key="Str.Error.Platform">平台：{0}</sys:String>
+    <sys:String x:Key="Str.Error.Runtime">运行时：{0}</sys:String>
+    <sys:String x:Key="Str.Error.Exception">异常：{0}</sys:String>
+    <sys:String x:Key="Str.Error.HResult">HRESULT：{0}</sys:String>
+    <sys:String x:Key="Str.Error.Message">消息：{0}</sys:String>
+    <sys:String x:Key="Str.Error.Chain">--- 异常链 ---</sys:String>
+    <sys:String x:Key="Str.Error.Stack">--- 堆栈 ---</sys:String>
+
+</ResourceDictionary>

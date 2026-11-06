@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <RootNamespace>AngelinaISAssistant</RootNamespace>
+    <AssemblyName>AngelinaISAssistant</AssemblyName>
+    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+
+  <!-- 窗口/任务栏图标 -->
+  <ItemGroup>
+    <Resource Include="Resources\app.ico" />
+  </ItemGroup>
+
+  <!-- 黑流树海关卡数据与地图图片（按需加载） -->
+  <ItemGroup>
+    <Resource Include="Resources\ro6_stages.json" />
+    <Resource Include="Resources\Maps\ro6\*.png" />
+  </ItemGroup>
+
+  <!-- hdiffpatch 增量更新工具，随程序一起输出到 tools\hdiffpatch -->
+  <ItemGroup>
+    <None Include="hdiffpatch_v5.1.3_bin_windows64\windows64\hdiffz.exe"
+          Link="tools\hdiffpatch\hdiffz.exe"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="hdiffpatch_v5.1.3_bin_windows64\windows64\hpatchz.exe"
+          Link="tools\hdiffpatch\hpatchz.exe"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="hdiffpatch_v5.1.3_bin_windows64\windows64\LICENSE.txt"
+          Link="tools\hdiffpatch\LICENSE.txt"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
