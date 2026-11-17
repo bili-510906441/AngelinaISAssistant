@@ -1,0 +1,15 @@
+﻿# 构建产物
+bin/
+obj/
+
+# CI 产出
+release/
+patch_verify/
+prev/
+prev_release/
+
+# 调试符号
+*.pdb
+
+# 用户配置 / 日志
+*.log

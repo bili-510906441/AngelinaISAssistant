@@ -21,7 +21,7 @@ internal static class ThemeManager
 
         var dictionary = new ResourceDictionary
         {
-            Source = new Uri(dark ? "Themes/Dark.xaml" : "Themes/Light.xaml", UriKind.Relative)
+            Source = DictionaryUri(dark ? "Themes/Dark.xaml" : "Themes/Light.xaml")
         };
 
         var merged = Application.Current.Resources.MergedDictionaries;
@@ -37,6 +37,10 @@ internal static class ThemeManager
 
         merged.Add(dictionary);
     }
+
+    /// <summary>用程序集限定的 pack URI，避免在非入口程序集中解析失败。</summary>
+    private static Uri DictionaryUri(string path) =>
+        new($"pack://application:,,,/{typeof(ThemeManager).Assembly.GetName().Name};component/{path}", UriKind.Absolute);
 
     /// <summary>让系统标题栏跟随主题（Windows 10 20H1 / Windows 11）。</summary>
     public static void ApplyTitleBar(Window window, bool dark)

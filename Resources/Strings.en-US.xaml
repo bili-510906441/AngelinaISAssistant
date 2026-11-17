@@ -8,58 +8,17 @@
     <!-- Caption buttons -->
 
     <!-- Top tabs -->
-    <sys:String x:Key="Str.TabQuery">Quick Query</sys:String>
     <sys:String x:Key="Str.TabLive">Live Assist</sys:String>
     <sys:String x:Key="Str.TabLog">Output Log</sys:String>
     <sys:String x:Key="Str.TabSettings">Settings</sys:String>
 
     <!-- Quick query -->
-    <sys:String x:Key="Str.Query.Title">Quick Query</sys:String>
-    <sys:String x:Key="Str.Query.Subtitle">Choose the Integrated Strategies theme for this run.</sys:String>
-    <sys:String x:Key="Str.Query.EmptyState">No results yet</sys:String>
-    <sys:String x:Key="Str.Query.EmptyHint">Type an operator, collectible, or event name above, then click Query</sys:String>
-    <sys:String x:Key="Str.Query.Button">Query</sys:String>
 
     <!-- Theme picker -->
-    <sys:String x:Key="Str.Query.PickTheme">Choose an Integrated Strategies theme</sys:String>
-    <sys:String x:Key="Str.Query.Selected">Selected theme</sys:String>
-    <sys:String x:Key="Str.Query.Back">← Back</sys:String>
-    <sys:String x:Key="Str.Filter.All">All</sys:String>
-    <sys:String x:Key="Str.Filter.Boss">BOSS</sys:String>
-    <sys:String x:Key="Str.Filter.Elite">Elite</sys:String>
-    <sys:String x:Key="Str.Type.Normal">Normal battle</sys:String>
-    <sys:String x:Key="Str.Type.Ending">Ending battle</sys:String>
-    <sys:String x:Key="Str.Type.Pursuit">Pursuit</sys:String>
-    <sys:String x:Key="Str.Type.Event">Event battle</sys:String>
-    <sys:String x:Key="Str.Layer.N">Layer {0}</sys:String>
-    <sys:String x:Key="Str.Layer.Any">Any layer</sys:String>
-    <sys:String x:Key="Str.Difficulty">Difficulty</sys:String>
-    <sys:String x:Key="Str.Hub.Maps">Maps</sys:String>
-    <sys:String x:Key="Str.Hub.Collectibles">Collectibles</sys:String>
-    <sys:String x:Key="Str.Hub.Operators">Operators</sys:String>
-    <sys:String x:Key="Str.Feature.Unsupported">Not supported yet</sys:String>
-    <sys:String x:Key="Str.Note.Button">Notebook</sys:String>
-    <sys:String x:Key="Str.Note.Hint">Write down what you learned about this stage. Each stage keeps its own note.</sys:String>
-    <sys:String x:Key="Str.Note.Save">Save</sys:String>
-    <sys:String x:Key="Str.Note.Saved">Saved</sys:String>
 
     <sys:String x:Key="Str.Runtime.Title">.NET runtime required</sys:String>
     <sys:String x:Key="Str.Runtime.Missing">This app requires the .NET 10 Desktop Runtime (Microsoft.WindowsDesktop.App 10.x), which was not found. Please install it and try again.</sys:String>
     <sys:String x:Key="Str.Runtime.OpenPage">Open the download page now?</sys:String>
-    <sys:String x:Key="Str.Theme.Unsupported">This Integrated Strategies theme is not supported yet</sys:String>
-
-    <sys:String x:Key="Str.Theme.1.Name">PHANTOM &amp; CRIMSON SOLITAIRE</sys:String>
-    <sys:String x:Key="Str.Theme.1.Alt">傀影与猩红孤钻</sys:String>
-    <sys:String x:Key="Str.Theme.2.Name">MIZUKI &amp; CAERULA ARBOR</sys:String>
-    <sys:String x:Key="Str.Theme.2.Alt">水月与深蓝之树</sys:String>
-    <sys:String x:Key="Str.Theme.3.Name">EXPEDITIONER'S JǪKLUMARKAR</sys:String>
-    <sys:String x:Key="Str.Theme.3.Alt">探索者的银凇止境</sys:String>
-    <sys:String x:Key="Str.Theme.4.Name">SARKAZ'S FURNACE SIDE FABLES</sys:String>
-    <sys:String x:Key="Str.Theme.4.Alt">萨卡兹的无终奇语</sys:String>
-    <sys:String x:Key="Str.Theme.5.Name">SUI'S GARDEN OF GROTESQUERIES</sys:String>
-    <sys:String x:Key="Str.Theme.5.Alt">岁的界园志异</sys:String>
-    <sys:String x:Key="Str.Theme.6.Name">THE BLACK FLOW OF THE DROWNING SEEKERS</sys:String>
-    <sys:String x:Key="Str.Theme.6.Alt">沉沦者的黑流树海</sys:String>
 
     <!-- Live assist -->
     <sys:String x:Key="Str.Live.Title">Live Assist</sys:String>
@@ -84,7 +43,7 @@
 
     <!-- Connection -->
     <sys:String x:Key="Str.Connection.Title">Connection</sys:String>
-    <sys:String x:Key="Str.Connection.Subtitle">Configure the data service address, port, and reconnect behavior.</sys:String>
+    <sys:String x:Key="Str.Connection.Subtitle">Choose how the live assist captures the screen.</sys:String>
     <sys:String x:Key="Str.Connection.Server">Server address</sys:String>
     <sys:String x:Key="Str.Connection.Port">Port</sys:String>
     <sys:String x:Key="Str.Connection.Behavior">Connection behavior</sys:String>
@@ -106,6 +65,13 @@
     <sys:String x:Key="Str.Update.Apply">Apply update</sys:String>
     <sys:String x:Key="Str.Update.NetworkError">Network error: no update package available.</sys:String>
     <sys:String x:Key="Str.Update.Downloading">Downloading update package…</sys:String>
+    <sys:String x:Key="Str.Update.DownloadingDiff">Downloading incremental package {0}</sys:String>
+    <sys:String x:Key="Str.Update.DownloadingFull">Downloading full package {0}</sys:String>
+    <sys:String x:Key="Str.Update.Progress">{0}% ( {1}MiB / {2}MiB )</sys:String>
+    <sys:String x:Key="Str.Update.DownloadedOnly">Downloaded {0}MiB</sys:String>
+    <sys:String x:Key="Str.Update.Mode">Update method</sys:String>
+    <sys:String x:Key="Str.Update.Mode.Diff">Prefer incremental</sys:String>
+    <sys:String x:Key="Str.Update.Mode.Full">Prefer full package</sys:String>
     <sys:String x:Key="Str.Update.Applying">Applying update…</sys:String>
     <sys:String x:Key="Str.Update.Restart">Update ready, restarting…</sys:String>
 
@@ -140,8 +106,6 @@
     <sys:String x:Key="Str.Status.Unsupported">Not supported</sys:String>
     <sys:String x:Key="Str.Status.Failed">Failed to start</sys:String>
     <sys:String x:Key="Str.Status.Interrupted">Capture interrupted</sys:String>
-    <sys:String x:Key="Str.Theme.Dark">Current: dark</sys:String>
-    <sys:String x:Key="Str.Theme.Light">Current: light</sys:String>
 
     <!-- Error dialog -->
     <sys:String x:Key="Str.Error.WindowTitle">AngelinaISAssistant - Error</sys:String>
@@ -168,5 +132,95 @@
     <sys:String x:Key="Str.Error.Message">Message: {0}</sys:String>
     <sys:String x:Key="Str.Error.Chain">--- Exception chain ---</sys:String>
     <sys:String x:Key="Str.Error.Stack">--- Stack trace ---</sys:String>
-
+    <sys:String x:Key="Str.Performance.Title">Performance</sys:String>
+    <sys:String x:Key="Str.Performance.Subtitle">Choose the compute device used for image recognition.</sys:String>
+    <sys:String x:Key="Str.Performance.GpuLabel">Use GPU acceleration for inference</sys:String>
+    <sys:String x:Key="Str.Performance.GpuHint">Choose the compute device used for inference; pick "Use CPU inference" to run entirely on CPU.</sys:String>
+    <sys:String x:Key="Str.Performance.None">Use CPU inference</sys:String>
+    <sys:String x:Key="Str.Performance.Default">System default</sys:String>
+    <sys:String x:Key="Str.Performance.DefaultWith">System default ({0})</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Performance">Performance</sys:String>
+    <sys:String x:Key="Str.Performance.SoftwareLabel">Use software rendering</sys:String>
+    <sys:String x:Key="Str.Performance.SoftwareHint">Force the app UI to render in software (CPU). Useful when GPU drivers misbehave; off by default.</sys:String>
+    <sys:String x:Key="Str.Confirm.Title">Confirm</sys:String>
+    <sys:String x:Key="Str.Confirm.Cancel">Cancel</sys:String>
+    <sys:String x:Key="Str.Confirm.Restart">Restart now</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmHeadline">Restart required</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmBody">Changing "Use software rendering" only takes effect after a full restart.&#10;This may cause lower performance, UI stutter and high CPU usage.&#10;Restart now?</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmLine1">Changing "Use software rendering" only takes effect after a full restart.</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmLine2">This may cause lower performance, UI stutter and high CPU usage.</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmLine3">Restart now?</sys:String>
+    <sys:String x:Key="Str.Capture.BackendLabel">Capture backend</sys:String>
+    <sys:String x:Key="Str.Capture.Hint">WGC is recommended for the best performance. If problems occur, try switching to another capture method.</sys:String>
+    <sys:String x:Key="Str.Capture.Wgc">WGC (Win10 1903+)</sys:String>
+    <sys:String x:Key="Str.Capture.Dxgi">DXGI Desktop Duplication</sys:String>
+    <sys:String x:Key="Str.Capture.BitBlt">BitBlt (GDI)</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Feedback">Feedback</sys:String>
+    <sys:String x:Key="Str.Feedback.Title">Feedback</sys:String>
+    <sys:String x:Key="Str.Feedback.Subtitle">Report a problem or suggest a feature using the entries below.</sys:String>
+    <sys:String x:Key="Str.Feedback.Hint">FAQ collects common questions; Feedback opens this project GitHub Issues page.</sys:String>
+    <sys:String x:Key="Str.Feedback.Faq">FAQ</sys:String>
+    <sys:String x:Key="Str.Feedback.Issues">Feedback</sys:String>
+    <sys:String x:Key="Str.Feedback.OpenFailed">Cannot open browser</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Achievements">Achievements</sys:String>
+    <sys:String x:Key="Str.Achievements.Title">Achievements</sys:String>
+    <sys:String x:Key="Str.Achievements.Subtitle">View and configure achievements and statistics.</sys:String>
+    <sys:String x:Key="Str.Achievements.Placeholder">Coming soon.</sys:String>
+    <sys:String x:Key="Str.Drop.Headline">Apply update package</sys:String>
+    <sys:String x:Key="Str.Drop.Package">Package: {0}</sys:String>
+    <sys:String x:Key="Str.Drop.Target">Will update to v{0} (current v{1}).</sys:String>
+    <sys:String x:Key="Str.Drop.FullPackage">This is a full package. Current version v{0}; all program files will be overwritten.</sys:String>
+    <sys:String x:Key="Str.Drop.DiffMismatch">Warning: this diff package expects v{0} but the current version is v{1}; it will probably fail.</sys:String>
+    <sys:String x:Key="Str.Drop.NewerAvailable">Warning: the latest version is v{0}, but this package only goes to v{1}.</sys:String>
+    <sys:String x:Key="Str.Drop.Confirm">Apply this update package and restart now?</sys:String>
+    <sys:String x:Key="Str.Drop.Invalid">Unrecognized update package</sys:String>
+    <sys:String x:Key="Str.Drop.Failed">Failed to apply update package</sys:String>
+    <sys:String x:Key="Str.Capture.Start">Start capture</sys:String>
+    <sys:String x:Key="Str.Capture.Stop">Stop capture</sys:String>
+    <sys:String x:Key="Str.Status.Starting">Starting capture…</sys:String>
+    <sys:String x:Key="Str.Crash.Title">Application error</sys:String>
+    <sys:String x:Key="Str.Crash.PrevHeadline">Bad news: why it crashed last time</sys:String>
+    <sys:String x:Key="Str.Crash.LiveHeadline">Bad news: why it crashed</sys:String>
+    <sys:String x:Key="Str.Crash.Guidance1">Please report this via Settings → Feedback.</sys:String>
+    <sys:String x:Key="Str.Crash.Guidance2">If you ask someone else for help, send the generated crash report file, not a screenshot, screen recording, photo of the screen, recorded video, hand-drawn image, or transcribed picture of this window.</sys:String>
+    <sys:String x:Key="Str.Crash.ReportPath">Crash report: {0}</sys:String>
+    <sys:String x:Key="Str.Crash.NoReport">Failed to write the crash report file.</sys:String>
+    <sys:String x:Key="Str.Crash.OpenFolder">Open report folder</sys:String>
+    <sys:String x:Key="Str.Crash.Close">Close</sys:String>
+    <sys:String x:Key="Str.Notice.Title">Notice</sys:String>
+    <sys:String x:Key="Str.Notice.Close">Close</sys:String>
+    <sys:String x:Key="Str.Location.Title">Unsafe startup location</sys:String>
+    <sys:String x:Key="Str.Location.Message">The application is running from a high-level location: {0}. Files may be overwritten, configuration writes may fail, or data may get mixed up. Please move the app into its own folder and start it again.</sys:String>
+    <sys:String x:Key="Str.Location.Detail">Do not place the exe directly in a drive root, temp folder, Windows folder, Program Files or a public folder. Use a dedicated folder such as D:\AngelinaISAssistant\.</sys:String>
+    <sys:String x:Key="Str.Debug.Title">Debug mode</sys:String>
+    <sys:String x:Key="Str.Debug.Subtitle">Hidden entry: each button forces the startup-location block dialog for that location.</sys:String>
+    <sys:String x:Key="Str.Debug.Close">Close</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Drive">Drive root</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Temp">Temp folder</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Windows">Windows folder</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.ProgramFiles">Program Files</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.ProgramData">ProgramData</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Public">Public folder</sys:String>
+    <sys:String x:Key="Str.Update.LegacyDiffUnsupported">Legacy single-file patches (.hdiff) are no longer supported. Use a folder package (.aisapatch) or a full package.</sys:String>
+    <sys:String x:Key="Str.Drop.LegacyDiff">Legacy single-file patches (.hdiff) are no longer supported</sys:String>
+    <sys:String x:Key="Str.Update.ApplyingFolder">Verifying and applying the folder patch…</sys:String>
+    <sys:String x:Key="Str.Update.FolderPatchFailed">Failed to apply the folder patch. Make sure the patch matches the installed version.</sys:String>
+    <sys:String x:Key="Str.Advanced.Show">Show advanced settings</sys:String>
+    <sys:String x:Key="Str.Advanced.Hide">Hide advanced settings</sys:String>
+    <sys:String x:Key="Str.Theme.LightShort">Light</sys:String>
+    <sys:String x:Key="Str.Theme.DarkShort">Dark</sys:String>
+    <sys:String x:Key="Str.Mask.Shown">Mask overlay shown.</sys:String>
+    <sys:String x:Key="Str.Error.BadNews">Bad news: {0}</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Hotkeys">Hotkeys</sys:String>
+    <sys:String x:Key="Str.Hotkey.Title">Hotkeys</sys:String>
+    <sys:String x:Key="Str.Hotkey.Subtitle">Configure the global hotkey to show or hide this app.</sys:String>
+    <sys:String x:Key="Str.Hotkey.ShowHideLabel">Show / hide AISA</sys:String>
+    <sys:String x:Key="Str.Hotkey.Hint">Default is Ctrl+Shift+Alt+A. Press Backspace / Delete / Esc to clear; a cleared hotkey is disabled.</sys:String>
+    <sys:String x:Key="Str.Hotkey.Empty">Not set (disabled)</sys:String>
+    <sys:String x:Key="Str.Hotkey.RegisterFailed">Failed to register hotkey</sys:String>
+    <sys:String x:Key="Str.Hotkey.ConflictDetail">The hotkey {0} is already used by another program, so it is currently inactive. It will recover automatically after that program is closed.</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerTitle">Hotkey owner</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerHint">Close this window and press the hotkey within 10 seconds to try identifying the program that owns it.</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerFound">Owning process: {0} (PID {1})</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerUnknown">Could not identify the owner: no other program came to the foreground after the hotkey was pressed; it may have no visible window.</sys:String>
 </ResourceDictionary>

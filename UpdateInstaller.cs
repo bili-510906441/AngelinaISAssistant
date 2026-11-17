@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -24,8 +25,8 @@ internal sealed record UpdateApplyResult(UpdateApplyStatus Status, string? Messa
 internal sealed record ReleaseAsset(string Name, string DownloadUrl);
 
 /// <summary>
-/// 从 GitHub Release 拉取更新包并应用：
-/// 优先用 angelina_isa_v旧_v新.hdiff 增量包打补丁，没有则整包 angelina_isa_v新_full.zip。
+/// 从 GitHub Release 拉取更新包并应用。
+/// 优先顺序由设置决定：文件夹级增量包 angelina_isa_v旧_v新.aisapatch 或整包 angelina_isa_v新_full.zip。
 /// 增量包针对主程序 AngelinaISAssistant.dll。
 /// </summary>
 internal static class UpdateInstaller
@@ -37,6 +38,7 @@ internal static class UpdateInstaller
 
     public static async Task<UpdateApplyResult> RunAsync(
         string remoteVersion,
+        UpdatePackagePreference preference,
         Action<string> progress,
         CancellationToken cancellationToken = default)
     {
@@ -58,53 +60,66 @@ internal static class UpdateInstaller
             return new UpdateApplyResult(UpdateApplyStatus.Failed, Loc.T("Str.Update.NetworkError"));
         }
 
-        if (assets.Count == 0)
+        var folderName = $"angelina_isa_v{local}_v{remote}.aisapatch";
+        var zipName = $"angelina_isa_v{remote}_full.zip";
+
+        var folderAsset = assets.FirstOrDefault(a => string.Equals(a.Name, folderName, StringComparison.OrdinalIgnoreCase));
+        var zipAsset = assets.FirstOrDefault(a => string.Equals(a.Name, zipName, StringComparison.OrdinalIgnoreCase));
+
+        var candidates = new List<(ReleaseAsset Asset, PackageKind Kind)>();
+
+        if (preference == UpdatePackagePreference.Full)
+        {
+            if (zipAsset is not null) candidates.Add((zipAsset, PackageKind.Full));
+            if (folderAsset is not null) candidates.Add((folderAsset, PackageKind.Folder));
+        }
+        else
+        {
+            if (folderAsset is not null) candidates.Add((folderAsset, PackageKind.Folder));
+            if (zipAsset is not null) candidates.Add((zipAsset, PackageKind.Full));
+        }
+
+        if (candidates.Count == 0)
         {
             return new UpdateApplyResult(UpdateApplyStatus.NotFound, Loc.T("Str.Update.NetworkError"));
         }
 
-        var hdiffName = $"angelina_isa_v{local}_v{remote}.hdiff";
-        var zipName = $"angelina_isa_v{remote}_full.zip";
-
         var stage = Path.Combine(AppContext.BaseDirectory, StageFolder);
 
-        try
+        UpdateApplyResult? lastError = null;
+
+        foreach (var (asset, kind) in candidates)
         {
-            if (Directory.Exists(stage))
+            try
             {
-                Directory.Delete(stage, true);
+                if (Directory.Exists(stage))
+                {
+                    Directory.Delete(stage, true);
+                }
+
+                Directory.CreateDirectory(stage);
+            }
+            catch (Exception ex)
+            {
+                return new UpdateApplyResult(UpdateApplyStatus.Failed, ex.Message);
             }
 
-            Directory.CreateDirectory(stage);
+            var result = kind == PackageKind.Folder
+                ? await ApplyFolderPackageAsync(asset, stage, progress, cancellationToken)
+                : await ApplyFullPackageAsync(asset, stage, progress, cancellationToken);
+
+            if (result.Status == UpdateApplyStatus.Success)
+            {
+                lastError = null;
+                break;
+            }
+
+            lastError = result;
         }
-        catch (Exception ex)
-        {
-            return new UpdateApplyResult(UpdateApplyStatus.Failed, ex.Message);
-        }
 
-        var hdiff = assets.FirstOrDefault(a => string.Equals(a.Name, hdiffName, StringComparison.OrdinalIgnoreCase));
-
-        if (hdiff is not null)
+        if (lastError is not null)
         {
-            var result = await ApplyDiffAsync(hdiff, stage, progress, cancellationToken);
-            if (result is not null)
-            {
-                return result;
-            }
-        }
-        else
-        {
-            var zip = assets.FirstOrDefault(a => string.Equals(a.Name, zipName, StringComparison.OrdinalIgnoreCase));
-            if (zip is null)
-            {
-                return new UpdateApplyResult(UpdateApplyStatus.NotFound, Loc.T("Str.Update.NetworkError"));
-            }
-
-            var result = await ApplyFullPackageAsync(zip, stage, progress, cancellationToken);
-            if (result is not null)
-            {
-                return result;
-            }
+            return lastError;
         }
 
         progress(Loc.T("Str.Update.Restart"));
@@ -122,66 +137,131 @@ internal static class UpdateInstaller
         return new UpdateApplyResult(UpdateApplyStatus.Success);
     }
 
-    private static async Task<UpdateApplyResult?> ApplyDiffAsync(
+    private static async Task<UpdateApplyResult> ApplyFolderPackageAsync(
         ReleaseAsset asset,
         string stage,
         Action<string> progress,
         CancellationToken cancellationToken)
     {
-        progress(Loc.T("Str.Update.Downloading"));
-
-        var patchPath = Path.Combine(Path.GetTempPath(), "angelina_update.hdiff");
+        var packagePath = Path.Combine(Path.GetTempPath(), "angelina_update.aisapatch");
 
         try
         {
-            await DownloadAsync(asset.DownloadUrl, patchPath, cancellationToken);
+            await DownloadAsync(
+                asset.DownloadUrl,
+                packagePath,
+                "Str.Update.DownloadingDiff",
+                asset.Name,
+                progress,
+                cancellationToken);
         }
         catch
         {
             return new UpdateApplyResult(UpdateApplyStatus.Failed, Loc.T("Str.Update.NetworkError"));
         }
 
-        progress(Loc.T("Str.Update.Applying"));
+        try
+        {
+            return await FolderPatch.ApplyAsync(packagePath, stage, progress, cancellationToken);
+        }
+        finally
+        {
+            TryDelete(packagePath);
+        }
+    }
+
+    private enum PackageKind
+    {
+        Folder,
+        Full
+    }
+
+
+    /// <summary>应用用户拖入本地的更新包（.aisapatch 文件夹级增量 或 _full.zip 全量；.hdiff 已不再支持）。</summary>
+    public static async Task<UpdateApplyResult> ApplyLocalAsync(
+        string packagePath,
+        Action<string> progress,
+        CancellationToken cancellationToken = default)
+    {
+        // 旧的单文件补丁（仅覆盖 dll）已不再支持
+        if (packagePath.EndsWith(".hdiff", StringComparison.OrdinalIgnoreCase))
+        {
+            return new UpdateApplyResult(UpdateApplyStatus.Failed, Loc.T("Str.Update.LegacyDiffUnsupported"));
+        }
+
+        var stage = Path.Combine(AppContext.BaseDirectory, StageFolder);
 
         try
         {
-            var current = Path.Combine(AppContext.BaseDirectory, AppFileName);
-            var patched = Path.Combine(stage, AppFileName);
-
-            var exitCode = await RunToolAsync(
-                IncrementalUpdate.HpatchzPath,
-                $"-f \"{current}\" \"{patchPath}\" \"{patched}\"");
-
-            if (exitCode != 0 || !File.Exists(patched) || new FileInfo(patched).Length == 0)
+            if (Directory.Exists(stage))
             {
-                return new UpdateApplyResult(UpdateApplyStatus.Failed, Loc.T("Str.Update.Failed"));
+                Directory.Delete(stage, true);
             }
+
+            Directory.CreateDirectory(stage);
         }
         catch (Exception ex)
         {
             return new UpdateApplyResult(UpdateApplyStatus.Failed, ex.Message);
         }
-        finally
+
+        progress(Loc.T("Str.Update.Applying"));
+
+        UpdateApplyResult result;
+
+        if (FolderPatch.LooksLikePackage(packagePath))
         {
-            TryDelete(patchPath);
+            result = await FolderPatch.ApplyAsync(packagePath, stage, progress, cancellationToken);
+        }
+        else
+        {
+            try
+            {
+                ZipFile.ExtractToDirectory(packagePath, stage, true);
+                FlattenStage(stage);
+                result = new UpdateApplyResult(UpdateApplyStatus.Success);
+            }
+            catch (Exception ex)
+            {
+                result = new UpdateApplyResult(UpdateApplyStatus.Failed, ex.Message);
+            }
         }
 
-        return null;
+        if (result.Status != UpdateApplyStatus.Success)
+        {
+            return result;
+        }
+
+        try
+        {
+            WriteUpdateScript();
+            LaunchUpdateScript();
+        }
+        catch (Exception ex)
+        {
+            return new UpdateApplyResult(UpdateApplyStatus.Failed, ex.Message);
+        }
+
+        return new UpdateApplyResult(UpdateApplyStatus.Success);
     }
 
-    private static async Task<UpdateApplyResult?> ApplyFullPackageAsync(
+    private static async Task<UpdateApplyResult> ApplyFullPackageAsync(
         ReleaseAsset asset,
         string stage,
         Action<string> progress,
         CancellationToken cancellationToken)
     {
-        progress(Loc.T("Str.Update.Downloading"));
-
         var zipPath = Path.Combine(Path.GetTempPath(), "angelina_update.zip");
 
         try
         {
-            await DownloadAsync(asset.DownloadUrl, zipPath, cancellationToken);
+            await DownloadAsync(
+                asset.DownloadUrl,
+                zipPath,
+                "Str.Update.DownloadingFull",
+                asset.Name,
+                progress,
+                cancellationToken);
         }
         catch
         {
@@ -204,7 +284,7 @@ internal static class UpdateInstaller
             TryDelete(zipPath);
         }
 
-        return null;
+        return new UpdateApplyResult(UpdateApplyStatus.Success);
     }
 
     /// <summary>如果压缩包只有一层根目录，把内容提上来，方便整体覆盖。</summary>
@@ -269,7 +349,14 @@ internal static class UpdateInstaller
         return assets;
     }
 
-    private static async Task DownloadAsync(string url, string path, CancellationToken cancellationToken)
+    /// <summary>下载并持续回报进度：文件名 + 百分比 + 已下载/总大小。</summary>
+    private static async Task DownloadAsync(
+        string url,
+        string path,
+        string kindKey,
+        string displayName,
+        Action<string> progress,
+        CancellationToken cancellationToken)
     {
         using var client = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
         client.DefaultRequestHeaders.UserAgent.ParseAdd("AngelinaISAssistant");
@@ -277,12 +364,50 @@ internal static class UpdateInstaller
         using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         response.EnsureSuccessStatusCode();
 
+        var total = response.Content.Headers.ContentLength ?? 0;
+
+        progress(Describe(kindKey, displayName, 0, 0, total));
+
         await using var source = await response.Content.ReadAsStreamAsync(cancellationToken);
         await using var target = File.Create(path);
-        await source.CopyToAsync(target, cancellationToken);
+
+        var buffer = new byte[81920];
+        long received = 0;
+        var lastPercent = -1;
+
+        int read;
+        while ((read = await source.ReadAsync(buffer, cancellationToken)) > 0)
+        {
+            await target.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
+            received += read;
+
+            var percent = total > 0 ? (int)(received * 100 / total) : 0;
+
+            if (percent != lastPercent)
+            {
+                lastPercent = percent;
+                progress(Describe(kindKey, displayName, percent, received, total));
+            }
+        }
+
+        progress(Describe(kindKey, displayName, 100, received, total > 0 ? total : received));
     }
 
-    private static async Task<int> RunToolAsync(string exe, string arguments)
+    private static string Describe(string kindKey, string name, int percent, long received, long total)
+    {
+        var header = Loc.F(kindKey, name);
+
+        var body = total > 0
+            ? Loc.F("Str.Update.Progress", percent, ToMb(received), ToMb(total))
+            : Loc.F("Str.Update.DownloadedOnly", ToMb(received));
+
+        return header + Environment.NewLine + body;
+    }
+
+    private static string ToMb(long bytes) =>
+        (bytes / 1024.0 / 1024.0).ToString("0.00", CultureInfo.InvariantCulture);
+
+    internal static async Task<int> RunToolAsync(string exe, string arguments)
     {
         if (!File.Exists(exe))
         {
@@ -342,6 +467,11 @@ internal static class UpdateInstaller
             ")",
             "xcopy \"_update_stage\\*\" \".\\\" /E /Y /I /Q >nul",
             "rd /s /q \"_update_stage\" >nul 2>&1",
+            "rd /s /q \"_update_pkg\" >nul 2>&1",
+            "if exist \"_update_remove.txt\" (",
+            "    for /f \"usebackq delims=\" %%L in (\"_update_remove.txt\") do if not \"%%L\"==\"\" del /q \"%%L\" >nul 2>&1",
+            "    del /q \"_update_remove.txt\" >nul 2>&1",
+            ")",
             "start \"\" \"AngelinaISAssistant.exe\"",
             "(goto) 2>nul & del \"%~f0\"",
             string.Empty);

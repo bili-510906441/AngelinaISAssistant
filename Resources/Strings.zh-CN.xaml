@@ -8,58 +8,17 @@
     <!-- 标题栏按钮 -->
 
     <!-- 顶部栏目 -->
-    <sys:String x:Key="Str.TabQuery">一键查询</sys:String>
     <sys:String x:Key="Str.TabLive">实时辅助</sys:String>
     <sys:String x:Key="Str.TabLog">输出日志</sys:String>
     <sys:String x:Key="Str.TabSettings">设置</sys:String>
 
     <!-- 一键查询 -->
-    <sys:String x:Key="Str.Query.Title">一键查询</sys:String>
-    <sys:String x:Key="Str.Query.Subtitle">选择本次对局使用的集成战略主题。</sys:String>
-    <sys:String x:Key="Str.Query.EmptyState">还没有查询结果</sys:String>
-    <sys:String x:Key="Str.Query.EmptyHint">在上方输入干员名、收藏品名或事件名后点击查询</sys:String>
-    <sys:String x:Key="Str.Query.Button">查询</sys:String>
 
     <!-- 主题选择 -->
-    <sys:String x:Key="Str.Query.PickTheme">选择集成战略主题</sys:String>
-    <sys:String x:Key="Str.Query.Selected">已选主题</sys:String>
-    <sys:String x:Key="Str.Query.Back">← 返回</sys:String>
-    <sys:String x:Key="Str.Filter.All">全部</sys:String>
-    <sys:String x:Key="Str.Filter.Boss">BOSS</sys:String>
-    <sys:String x:Key="Str.Filter.Elite">精英</sys:String>
-    <sys:String x:Key="Str.Type.Normal">普通战斗</sys:String>
-    <sys:String x:Key="Str.Type.Ending">结局作战</sys:String>
-    <sys:String x:Key="Str.Type.Pursuit">追猎</sys:String>
-    <sys:String x:Key="Str.Type.Event">事件作战</sys:String>
-    <sys:String x:Key="Str.Layer.N">{0}层</sys:String>
-    <sys:String x:Key="Str.Layer.Any">任意层</sys:String>
-    <sys:String x:Key="Str.Difficulty">难度选择</sys:String>
-    <sys:String x:Key="Str.Hub.Maps">地图</sys:String>
-    <sys:String x:Key="Str.Hub.Collectibles">收藏品</sys:String>
-    <sys:String x:Key="Str.Hub.Operators">干员</sys:String>
-    <sys:String x:Key="Str.Feature.Unsupported">暂不支持</sys:String>
-    <sys:String x:Key="Str.Note.Button">错题本</sys:String>
-    <sys:String x:Key="Str.Note.Hint">记录你对这一关的理解与打法，每个关卡的笔记互相独立保存。</sys:String>
-    <sys:String x:Key="Str.Note.Save">保存</sys:String>
-    <sys:String x:Key="Str.Note.Saved">已保存</sys:String>
 
     <sys:String x:Key="Str.Runtime.Title">缺少 .NET 运行环境</sys:String>
     <sys:String x:Key="Str.Runtime.Missing">本程序需要 .NET 10 桌面运行时（Microsoft.WindowsDesktop.App 10.x）才能运行，当前环境没有检测到。请先安装后再启动。</sys:String>
     <sys:String x:Key="Str.Runtime.OpenPage">是否现在打开下载页面？</sys:String>
-    <sys:String x:Key="Str.Theme.Unsupported">暂不支持这个集成战略主题</sys:String>
-
-    <sys:String x:Key="Str.Theme.1.Name">傀影与猩红孤钻</sys:String>
-    <sys:String x:Key="Str.Theme.1.Alt">PHANTOM &amp; CRIMSON SOLITAIRE</sys:String>
-    <sys:String x:Key="Str.Theme.2.Name">水月与深蓝之树</sys:String>
-    <sys:String x:Key="Str.Theme.2.Alt">MIZUKI &amp; CAERULA ARBOR</sys:String>
-    <sys:String x:Key="Str.Theme.3.Name">探索者的银凇止境</sys:String>
-    <sys:String x:Key="Str.Theme.3.Alt">EXPEDITIONER'S JǪKLUMARKAR</sys:String>
-    <sys:String x:Key="Str.Theme.4.Name">萨卡兹的无终奇语</sys:String>
-    <sys:String x:Key="Str.Theme.4.Alt">SARKAZ'S FURNACE SIDE FABLES</sys:String>
-    <sys:String x:Key="Str.Theme.5.Name">岁的界园志异</sys:String>
-    <sys:String x:Key="Str.Theme.5.Alt">SUI'S GARDEN OF GROTESQUERIES</sys:String>
-    <sys:String x:Key="Str.Theme.6.Name">沉沦者的黑流树海</sys:String>
-    <sys:String x:Key="Str.Theme.6.Alt">THE BLACK FLOW OF THE DROWNING SEEKERS</sys:String>
 
     <!-- 实时辅助 -->
     <sys:String x:Key="Str.Live.Title">实时辅助</sys:String>
@@ -84,7 +43,7 @@
 
     <!-- 连接设置 -->
     <sys:String x:Key="Str.Connection.Title">连接设置</sys:String>
-    <sys:String x:Key="Str.Connection.Subtitle">配置数据服务地址、端口与断线重连方式。</sys:String>
+    <sys:String x:Key="Str.Connection.Subtitle">选择实时辅助使用的画面采集方式。</sys:String>
     <sys:String x:Key="Str.Connection.Server">服务地址</sys:String>
     <sys:String x:Key="Str.Connection.Port">端口</sys:String>
     <sys:String x:Key="Str.Connection.Behavior">连接行为</sys:String>
@@ -106,6 +65,13 @@
     <sys:String x:Key="Str.Update.Apply">应用更新</sys:String>
     <sys:String x:Key="Str.Update.NetworkError">网络错误：没有找到可用的更新包。</sys:String>
     <sys:String x:Key="Str.Update.Downloading">正在下载更新包…</sys:String>
+    <sys:String x:Key="Str.Update.DownloadingDiff">正在下载增量包 {0}</sys:String>
+    <sys:String x:Key="Str.Update.DownloadingFull">正在下载完整包 {0}</sys:String>
+    <sys:String x:Key="Str.Update.Progress">{0}% ( {1}MiB / {2}MiB )</sys:String>
+    <sys:String x:Key="Str.Update.DownloadedOnly">已下载 {0}MiB</sys:String>
+    <sys:String x:Key="Str.Update.Mode">更新方式</sys:String>
+    <sys:String x:Key="Str.Update.Mode.Diff">优先增量包</sys:String>
+    <sys:String x:Key="Str.Update.Mode.Full">优先完整包</sys:String>
     <sys:String x:Key="Str.Update.Applying">正在应用更新…</sys:String>
     <sys:String x:Key="Str.Update.Restart">更新包已就绪，正在重启…</sys:String>
 
@@ -140,8 +106,6 @@
     <sys:String x:Key="Str.Status.Unsupported">系统不支持</sys:String>
     <sys:String x:Key="Str.Status.Failed">启动失败</sys:String>
     <sys:String x:Key="Str.Status.Interrupted">采集中断</sys:String>
-    <sys:String x:Key="Str.Theme.Dark">当前：深色</sys:String>
-    <sys:String x:Key="Str.Theme.Light">当前：浅色</sys:String>
 
     <!-- 错误窗口 -->
     <sys:String x:Key="Str.Error.WindowTitle">安洁莉娜集成战略小助手 - 出错了</sys:String>
@@ -168,5 +132,95 @@
     <sys:String x:Key="Str.Error.Message">消息：{0}</sys:String>
     <sys:String x:Key="Str.Error.Chain">--- 异常链 ---</sys:String>
     <sys:String x:Key="Str.Error.Stack">--- 堆栈 ---</sys:String>
-
+    <sys:String x:Key="Str.Performance.Title">性能设置</sys:String>
+    <sys:String x:Key="Str.Performance.Subtitle">控制图像识别使用的计算设备。</sys:String>
+    <sys:String x:Key="Str.Performance.GpuLabel">使用 GPU 加速推理</sys:String>
+    <sys:String x:Key="Str.Performance.GpuHint">选择运行推理时使用的计算设备；选「使用CPU推理」则全部由 CPU 计算。</sys:String>
+    <sys:String x:Key="Str.Performance.None">使用CPU推理</sys:String>
+    <sys:String x:Key="Str.Performance.Default">系统默认</sys:String>
+    <sys:String x:Key="Str.Performance.DefaultWith">系统默认（{0}）</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Performance">性能设置</sys:String>
+    <sys:String x:Key="Str.Performance.SoftwareLabel">使用软件渲染</sys:String>
+    <sys:String x:Key="Str.Performance.SoftwareHint">开启后本程序界面强制使用软件渲染（CPU 绘制），适合显卡驱动异常时使用；默认关闭。</sys:String>
+    <sys:String x:Key="Str.Confirm.Title">确认操作</sys:String>
+    <sys:String x:Key="Str.Confirm.Cancel">取消</sys:String>
+    <sys:String x:Key="Str.Confirm.Restart">立即重启</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmHeadline">需要重启应用</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmBody">修改「使用软件渲染」后需要完全重启应用才会生效。&#10;这会导致性能下降、界面卡顿、CPU 占用率过高等后果。&#10;是否立即重启？</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmLine1">修改「使用软件渲染」后需要完全重启应用才会生效。</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmLine2">这会导致性能下降、界面卡顿、CPU 占用率过高等后果。</sys:String>
+    <sys:String x:Key="Str.SoftwareRender.ConfirmLine3">是否立即重启？</sys:String>
+    <sys:String x:Key="Str.Capture.BackendLabel">画面采集方式</sys:String>
+    <sys:String x:Key="Str.Capture.Hint">推荐使用性能最佳的 WGC 模式。若出现异常，请尝试切换到其他采集方式。</sys:String>
+    <sys:String x:Key="Str.Capture.Wgc">WGC(Win10 1903+)</sys:String>
+    <sys:String x:Key="Str.Capture.Dxgi">DXGI 桌面复制</sys:String>
+    <sys:String x:Key="Str.Capture.BitBlt">BitBlt（GDI）</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Feedback">问题反馈</sys:String>
+    <sys:String x:Key="Str.Feedback.Title">问题反馈</sys:String>
+    <sys:String x:Key="Str.Feedback.Subtitle">遇到问题或有功能建议，可以通过下面的入口告诉我们。</sys:String>
+    <sys:String x:Key="Str.Feedback.Hint">常见问题整理了使用中可能遇到的疑问；问题反馈会打开本项目的 GitHub Issues 页面。</sys:String>
+    <sys:String x:Key="Str.Feedback.Faq">常见问题</sys:String>
+    <sys:String x:Key="Str.Feedback.Issues">问题反馈</sys:String>
+    <sys:String x:Key="Str.Feedback.OpenFailed">无法打开浏览器</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Achievements">成就设置</sys:String>
+    <sys:String x:Key="Str.Achievements.Title">成就设置</sys:String>
+    <sys:String x:Key="Str.Achievements.Subtitle">查看与配置本工具的成就与统计。</sys:String>
+    <sys:String x:Key="Str.Achievements.Placeholder">功能开发中，敬请期待。</sys:String>
+    <sys:String x:Key="Str.Drop.Headline">应用更新包</sys:String>
+    <sys:String x:Key="Str.Drop.Package">更新包：{0}</sys:String>
+    <sys:String x:Key="Str.Drop.Target">将更新到 v{0}（当前 v{1}）。</sys:String>
+    <sys:String x:Key="Str.Drop.FullPackage">这是全量包，当前版本 v{0}，将整体覆盖程序文件。</sys:String>
+    <sys:String x:Key="Str.Drop.DiffMismatch">警告：这个增量包要求从 v{0} 升级，当前是 v{1}，很可能无法应用。</sys:String>
+    <sys:String x:Key="Str.Drop.NewerAvailable">警告：最新版本已经是 v{0}，这个包只到 v{1}。</sys:String>
+    <sys:String x:Key="Str.Drop.Confirm">确定要应用这个更新包并重启程序吗？</sys:String>
+    <sys:String x:Key="Str.Drop.Invalid">无法识别的更新包</sys:String>
+    <sys:String x:Key="Str.Drop.Failed">更新包应用失败</sys:String>
+    <sys:String x:Key="Str.Capture.Start">开始采集</sys:String>
+    <sys:String x:Key="Str.Capture.Stop">停止采集</sys:String>
+    <sys:String x:Key="Str.Status.Starting">正在启动采集…</sys:String>
+    <sys:String x:Key="Str.Crash.Title">程序出错</sys:String>
+    <sys:String x:Key="Str.Crash.PrevHeadline">悲报：上次出错原因</sys:String>
+    <sys:String x:Key="Str.Crash.LiveHeadline">悲报：出错原因</sys:String>
+    <sys:String x:Key="Str.Crash.Guidance1">请前往「设置 → 问题反馈」提交这个问题。</sys:String>
+    <sys:String x:Key="Str.Crash.Guidance2">如果向他人寻求帮助，请发送生成的错误报告文件，而不是发送此窗口的截图、录屏适配、屏幕照片、拍摄的视频、手绘图片或誊抄的画面内容。</sys:String>
+    <sys:String x:Key="Str.Crash.ReportPath">错误报告文件：{0}</sys:String>
+    <sys:String x:Key="Str.Crash.NoReport">错误报告文件写入失败。</sys:String>
+    <sys:String x:Key="Str.Crash.OpenFolder">打开报告所在文件夹</sys:String>
+    <sys:String x:Key="Str.Crash.Close">关闭</sys:String>
+    <sys:String x:Key="Str.Notice.Title">提示</sys:String>
+    <sys:String x:Key="Str.Notice.Close">关闭</sys:String>
+    <sys:String x:Key="Str.Location.Title">启动位置不合适</sys:String>
+    <sys:String x:Key="Str.Location.Message">当前程序所在的位置层级过高：{0}。这个位置容易引发文件覆盖、配置写入异常或数据混乱。请先将应用移动到独立文件夹中，再重新启动。</sys:String>
+    <sys:String x:Key="Str.Location.Detail">不要把 exe 直接放在盘符根目录、临时目录、Windows 目录、Program Files 或公共目录下；建议单独建一个文件夹，例如 D:\AngelinaISAssistant\。</sys:String>
+    <sys:String x:Key="Str.Debug.Title">Debug 模式</sys:String>
+    <sys:String x:Key="Str.Debug.Subtitle">隐藏入口：点击下面的按钮可以强行弹出对应高危位置的启动拦截提示，用于验证文案与拦截逻辑。</sys:String>
+    <sys:String x:Key="Str.Debug.Close">关闭</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Drive">盘符根目录</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Temp">临时目录</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Windows">Windows 目录</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.ProgramFiles">Program Files</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.ProgramData">ProgramData</sys:String>
+    <sys:String x:Key="Str.Debug.Cat.Public">公共目录</sys:String>
+    <sys:String x:Key="Str.Update.LegacyDiffUnsupported">不再支持旧版单文件补丁（.hdiff），请使用文件夹级补丁（.aisapatch）或全量包。</sys:String>
+    <sys:String x:Key="Str.Drop.LegacyDiff">不再支持旧版单文件补丁（.hdiff）</sys:String>
+    <sys:String x:Key="Str.Update.ApplyingFolder">正在校验并应用文件夹补丁…</sys:String>
+    <sys:String x:Key="Str.Update.FolderPatchFailed">文件夹补丁应用失败，请确认当前版本与补丁匹配。</sys:String>
+    <sys:String x:Key="Str.Advanced.Show">显示高级设置</sys:String>
+    <sys:String x:Key="Str.Advanced.Hide">隐藏高级设置</sys:String>
+    <sys:String x:Key="Str.Theme.LightShort">浅色</sys:String>
+    <sys:String x:Key="Str.Theme.DarkShort">深色</sys:String>
+    <sys:String x:Key="Str.Mask.Shown">已显示遮罩窗口。</sys:String>
+    <sys:String x:Key="Str.Error.BadNews">悲报：{0}</sys:String>
+    <sys:String x:Key="Str.SettingsNav.Hotkeys">热键设置</sys:String>
+    <sys:String x:Key="Str.Hotkey.Title">热键设置</sys:String>
+    <sys:String x:Key="Str.Hotkey.Subtitle">设置显示或收起本程序的全局热键。</sys:String>
+    <sys:String x:Key="Str.Hotkey.ShowHideLabel">显示/收起 AISA</sys:String>
+    <sys:String x:Key="Str.Hotkey.Hint">默认 Ctrl+Shift+Alt+A；按退格 / Delete / Esc 可清除，清除后热键不生效。</sys:String>
+    <sys:String x:Key="Str.Hotkey.Empty">未设置（不生效）</sys:String>
+    <sys:String x:Key="Str.Hotkey.RegisterFailed">热键注册失败</sys:String>
+    <sys:String x:Key="Str.Hotkey.ConflictDetail">热键 {0} 已被其他程序占用，当前热键不生效。关闭占用它的程序后会自动恢复。</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerTitle">热键占用者</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerHint">关闭本窗口后 10 秒内按下该热键，可以尝试识别占用它的程序。</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerFound">占用进程：{0}（PID {1}）</sys:String>
+    <sys:String x:Key="Str.Hotkey.OwnerUnknown">无法确定占用者：按下热键后没有其他程序来到前台，它可能没有可见窗口。</sys:String>
 </ResourceDictionary>

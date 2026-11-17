@@ -1,31 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {}
+    "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {}
   },
   "projects": {
-    "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {
+    "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
+        "projectUniqueName": "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
         "projectName": "AngelinaISAssistant",
-        "projectPath": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
+        "projectPath": "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
         "packagesPath": "C:\\Users\\Angelina\\.nuget\\packages\\",
-        "outputPath": "D:\\github_sync\\AngelinaISAssistant\\obj\\",
+        "outputPath": "d:\\github_sync\\AngelinaISAssistant\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Angelina\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net10.0-windows10.0.19041.0"
+          "net10.0-windows10.0.26100.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net10.0-windows10.0.19041.0": {
-            "framework": "net10.0-windows10.0.19041",
-            "targetAlias": "net10.0-windows10.0.19041.0",
+          "net10.0-windows10.0.26100.0": {
+            "framework": "net10.0-windows10.0.26100",
+            "targetAlias": "net10.0-windows10.0.26100.0",
             "projectReferences": {}
           }
         },
@@ -42,9 +42,23 @@
         "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
-        "net10.0-windows10.0.19041.0": {
-          "framework": "net10.0-windows10.0.19041",
-          "targetAlias": "net10.0-windows10.0.19041.0",
+        "net10.0-windows10.0.26100.0": {
+          "framework": "net10.0-windows10.0.26100",
+          "targetAlias": "net10.0-windows10.0.26100.0",
+          "dependencies": {
+            "Serilog": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Vortice.Direct3D11": {
+              "target": "Package",
+              "version": "[3.6.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -59,7 +73,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
-              "version": "[10.0.19041.57, 10.0.19041.57]"
+              "version": "[10.0.26100.57, 10.0.26100.57]"
             }
           ],
           "frameworkReferences": {

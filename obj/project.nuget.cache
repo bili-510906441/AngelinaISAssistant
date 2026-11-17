@@ -1,10 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "7BueUDv4tiw=",
+  "dgSpecHash": "N2Av/puTm8o=",
   "success": true,
-  "projectFilePath": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
+  "projectFilePath": "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Angelina\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512"
+    "C:\\Users\\Angelina\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\sharpgen.runtime\\2.2.0-beta\\sharpgen.runtime.2.2.0-beta.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\sharpgen.runtime.com\\2.2.0-beta\\sharpgen.runtime.com.2.2.0-beta.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\vortice.direct3d11\\3.6.2\\vortice.direct3d11.3.6.2.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\vortice.directx\\3.6.2\\vortice.directx.3.6.2.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\vortice.dxgi\\3.6.2\\vortice.dxgi.3.6.2.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\vortice.mathematics\\1.9.2\\vortice.mathematics.1.9.2.nupkg.sha512",
+    "C:\\Users\\Angelina\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.26100.57\\microsoft.windows.sdk.net.ref.10.0.26100.57.nupkg.sha512"
   ],
   "logs": []
 }

@@ -1,0 +1,242 @@
+﻿name: Release CI/CD
+
+# 仓库根目录 = code/（本文件位于 code/.github/workflows）。
+# 构建、测试、发布，并在打 v* 标签时自动生成全量包与相对上一版本的增量补丁。
+
+on:
+  push:
+    branches: [main, master]
+    tags: ["v*"]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "10.0.x"
+  DOTNET_NOLOGO: "1"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+
+jobs:
+  build:
+    name: Build, test and publish (win-x64)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Show toolchain
+        run: |
+          dotnet --info
+          dotnet --list-runtimes
+
+      - name: Restore
+        run: dotnet restore AngelinaISAssistant.csproj -r win-x64
+
+      - name: Build (Release, warnings as errors)
+        run: dotnet build AngelinaISAssistant.csproj -c Release -r win-x64 --no-restore -warnaserror
+
+      - name: Smoke test (window shell / resources)
+        run: dotnet run --project auto_test/SmokeTest/SmokeTest.csproj -c Release
+
+      - name: Folder patch test (hdiffz + hpatchz)
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $work = Join-Path $env:RUNNER_TEMP 'patchtest'
+          Remove-Item $work -Recurse -Force -ErrorAction SilentlyContinue
+          $old = Join-Path $work 'old'
+          $new = Join-Path $work 'new'
+          New-Item -ItemType Directory -Force $old, $new | Out-Null
+
+          Set-Content (Join-Path $old 'keep.txt') 'same' -NoNewline
+          Set-Content (Join-Path $new 'keep.txt') 'same' -NoNewline
+          Set-Content (Join-Path $old 'a.txt') 'hello v1' -NoNewline
+          Set-Content (Join-Path $new 'a.txt') 'hello v2' -NoNewline
+          Set-Content (Join-Path $old 'removed.txt') 'bye' -NoNewline
+          Set-Content (Join-Path $new 'added.txt') 'new file' -NoNewline
+
+          $bytes = New-Object byte[] 4096
+          [Random]::new(42).NextBytes($bytes)
+          [System.IO.File]::WriteAllBytes((Join-Path $old 'changed.bin'), $bytes)
+          $bytes[0] = 7
+          [System.IO.File]::WriteAllBytes((Join-Path $new 'changed.bin'), $bytes)
+
+          ./version_tools/make_update.ps1 `
+            -OldDir $old -NewDir $new `
+            -FromVersion v0.0.2 -ToVersion v0.0.4 `
+            -OutDir $work
+
+          $package = Join-Path $work 'angelina_isa_v0.0.2_v0.0.4.aisapatch'
+          if (-not (Test-Path $package)) { throw '增量包未生成' }
+
+          dotnet run --project auto_test/PatchTest/PatchTest.csproj -c Release -- `
+            $old $package (Join-Path $work 'stage') `
+            'hdiffpatch_v5.1.3_bin_windows64/windows64/hpatchz.exe'
+
+      - name: Publish release folder
+        run: ./version_tools/publish_release.ps1 -OutDir release
+
+      - name: Verify release layout
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $required = @(
+            'release/AngelinaISAssistant.exe',
+            'release/AngelinaISAssistant.dll',
+            'release/AngelinaISAssistant.runtimeconfig.json',
+            'release/DependencySetup_依赖库安装.bat',
+            'release/externals/Serilog.dll',
+            'release/externals/Vortice.Direct3D11.dll',
+            'release/externals/onnxruntime/onnxruntime.dll',
+            'release/tools/hdiffpatch/hpatchz.exe'
+          )
+
+          foreach ($item in $required) {
+            if (-not (Test-Path $item)) { throw "缺少发布文件：$item" }
+          }
+
+          if (-not (Test-Path 'release/runtime/host/fxr')) { throw '缺少 .NET 运行时目录 runtime/host/fxr' }
+
+          $unusedCultures = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App/*' -Directory |
+            Where-Object { $_.Name -match '^[a-z]{2}(-[A-Za-z]{2,4})?$' -and $_.Name -notin @('zh-Hans', 'zh-Hant', 'ja') }
+
+          if ($unusedCultures) { throw "运行时语言目录未裁剪：$($unusedCultures.Name -join ', ')" }
+
+          $size = [math]::Round(((Get-ChildItem release -Recurse -File | Measure-Object Length -Sum).Sum / 1MB), 1)
+          $count = (Get-ChildItem release -Recurse -File).Count
+          Write-Host "release 就绪：$count 个文件，$size MB"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-win-x64
+          path: release
+          if-no-files-found: error
+          retention-days: 14
+
+  publish-release:
+    name: Publish GitHub Release + patch
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Download release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-win-x64
+          path: release
+
+      - name: Checkout tags (for previous version)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve previous tag
+        id: prev
+        run: |
+          $prev = git describe --tags --abbrev=0 HEAD^ 2>$null
+          if ([string]::IsNullOrWhiteSpace($prev)) { $prev = '' }
+          "tag=$prev" >> $env:GITHUB_OUTPUT
+          Write-Host "previous tag = '$prev'"
+
+      - name: Download previous release
+        id: prevzip
+        if: steps.prev.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          New-Item -ItemType Directory -Force prev | Out-Null
+          gh release download "${{ steps.prev.outputs.tag }}" --pattern "angelina_isa_v*_full.zip" --dir prev 2>$null
+
+          $zip = Get-ChildItem prev -Filter '*_full.zip' -ErrorAction SilentlyContinue | Select-Object -First 1
+
+          if (-not $zip) {
+            Write-Warning '上一个版本没有 full.zip 资产，跳过增量补丁'
+            "ok=0" >> $env:GITHUB_OUTPUT
+            return
+          }
+
+          Expand-Archive $zip.FullName -DestinationPath prev_release -Force
+          "ok=1" >> $env:GITHUB_OUTPUT
+
+      - name: Build and verify incremental patch
+        if: steps.prevzip.outputs.ok == '1'
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $from = '${{ steps.prev.outputs.tag }}'
+          $to = '${{ github.ref_name }}'
+
+          ./version_tools/make_update.ps1 -OldDir prev_release -NewDir release -FromVersion $from -ToVersion $to -OutDir .
+
+          $patch = "angelina_isa_v$($from.TrimStart('v'))_v$($to.TrimStart('v')).aisapatch"
+          if (-not (Test-Path $patch)) { throw "未生成补丁：$patch" }
+
+          # 用上一个版本真实应用一次补丁，结果必须与本次 release 完全一致
+          Remove-Item patch_verify -Recurse -Force -ErrorAction SilentlyContinue
+          & hdiffpatch_v5.1.3_bin_windows64/windows64/hpatchz.exe -s-64m prev_release $patch patch_verify | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw '补丁应用失败' }
+
+          function Get-TreeHash([string]$dir) {
+            $root = (Resolve-Path $dir).Path
+            Get-ChildItem $dir -Recurse -File | ForEach-Object {
+              $_.FullName.Substring($root.Length + 1).Replace('\', '/') + '|' + (Get-FileHash $_.FullName -Algorithm SHA256).Hash
+            } | Sort-Object
+          }
+
+          $diff = Compare-Object (Get-TreeHash 'patch_verify') (Get-TreeHash 'release')
+
+          if ($diff) {
+            $diff | Select-Object -First 10 | Format-Table | Out-String | Write-Host
+            throw '补丁结果与 release 不一致'
+          }
+
+          "PATCH=$patch" >> $env:GITHUB_ENV
+          Write-Host "补丁校验通过：$patch"
+
+      - name: Package full update zip
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          $zip = "angelina_isa_v${version}_full.zip"
+
+          Compress-Archive -Path release/* -DestinationPath $zip -CompressionLevel Optimal
+
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
+          "$hash  $zip" | Set-Content "$zip.sha256.txt" -Encoding ascii
+
+          "ZIP=$zip" >> $env:GITHUB_ENV
+          Write-Host "已生成 $zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.ZIP }}
+            ${{ env.ZIP }}.sha256.txt
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+
+      - name: Attach incremental patch
+        if: env.PATCH != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.PATCH }}
+          fail_on_unmatched_files: true

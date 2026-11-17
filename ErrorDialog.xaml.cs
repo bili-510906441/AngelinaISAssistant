@@ -38,7 +38,7 @@ public partial class ErrorDialog : Window
             root = root.InnerException;
         }
 
-        var dialog = new ErrorDialog(headline, Describe(root), BuildDetails(root, exception));
+        var dialog = new ErrorDialog(BadNews(headline), Describe(root), BuildDetails(root, exception));
 
         if (owner is not null && owner.IsVisible)
         {
@@ -46,6 +46,32 @@ public partial class ErrorDialog : Window
         }
 
         dialog.ShowDialog();
+    }
+
+    /// <summary>所有错误统一成「悲报：{原因}」，保留具体原因作为后缀。</summary>
+    /// <summary>只有一句原因、没有异常的提示（例如热键被占用）。</summary>
+    public static void ShowMessage(Window? owner, string headline, string reason)
+    {
+        var dialog = new ErrorDialog(BadNews(headline), reason, string.Empty);
+
+        if (owner is not null && owner.IsVisible)
+        {
+            dialog.Owner = owner;
+        }
+
+        dialog.ShowDialog();
+    }
+
+    private static string BadNews(string headline)
+    {
+        if (string.IsNullOrWhiteSpace(headline))
+        {
+            return Loc.T("Str.Error.Headline");
+        }
+
+        return headline.Contains('悲') || headline.StartsWith("Bad news", StringComparison.OrdinalIgnoreCase)
+            ? headline
+            : Loc.F("Str.Error.BadNews", headline);
     }
 
     private static string Describe(Exception root)
