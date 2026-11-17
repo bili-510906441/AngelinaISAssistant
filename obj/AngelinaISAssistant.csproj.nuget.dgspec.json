@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {}
+    "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {}
   },
   "projects": {
-    "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {
+    "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
+        "projectUniqueName": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
         "projectName": "AngelinaISAssistant",
-        "projectPath": "d:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
+        "projectPath": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
         "packagesPath": "C:\\Users\\Angelina\\.nuget\\packages\\",
-        "outputPath": "d:\\github_sync\\AngelinaISAssistant\\obj\\",
+        "outputPath": "D:\\github_sync\\AngelinaISAssistant\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Angelina\\AppData\\Roaming\\NuGet\\NuGet.Config"

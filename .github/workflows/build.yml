@@ -1,0 +1,127 @@
+﻿name: Build
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "10.0.x"
+  DOTNET_NOLOGO: "1"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+
+jobs:
+  build:
+    name: Build, test and publish (win-x64)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Show toolchain
+        run: |
+          dotnet --info
+          dotnet --list-runtimes
+
+      - name: Restore
+        run: dotnet restore AngelinaISAssistant.csproj -r win-x64
+
+      - name: Build (Release, warnings as errors)
+        run: dotnet build AngelinaISAssistant.csproj -c Release -r win-x64 --no-restore -warnaserror
+
+      - name: Smoke test (window shell / resources)
+        run: dotnet run --project auto_test/SmokeTest/SmokeTest.csproj -c Release
+
+      - name: Folder patch test (hdiffz + hpatchz)
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $work = Join-Path $env:RUNNER_TEMP 'patchtest'
+          Remove-Item $work -Recurse -Force -ErrorAction SilentlyContinue
+          $old = Join-Path $work 'old'
+          $new = Join-Path $work 'new'
+          New-Item -ItemType Directory -Force $old, $new | Out-Null
+
+          Set-Content (Join-Path $old 'keep.txt') 'same' -NoNewline
+          Set-Content (Join-Path $new 'keep.txt') 'same' -NoNewline
+          Set-Content (Join-Path $old 'a.txt') 'hello v1' -NoNewline
+          Set-Content (Join-Path $new 'a.txt') 'hello v2' -NoNewline
+          Set-Content (Join-Path $old 'removed.txt') 'bye' -NoNewline
+          Set-Content (Join-Path $new 'added.txt') 'new file' -NoNewline
+
+          $bytes = New-Object byte[] 4096
+          [Random]::new(42).NextBytes($bytes)
+          [System.IO.File]::WriteAllBytes((Join-Path $old 'changed.bin'), $bytes)
+          $bytes[0] = 7
+          [System.IO.File]::WriteAllBytes((Join-Path $new 'changed.bin'), $bytes)
+
+          ./version_tools/make_update.ps1 `
+            -OldDir $old -NewDir $new `
+            -FromVersion v0.0.2 -ToVersion v0.0.4 `
+            -OutDir $work
+
+          $package = Join-Path $work 'angelina_isa_v0.0.2_v0.0.4.aisapatch'
+          if (-not (Test-Path $package)) { throw '增量包未生成' }
+
+          dotnet run --project auto_test/PatchTest/PatchTest.csproj -c Release -- `
+            $old $package (Join-Path $work 'stage') `
+            'hdiffpatch_v5.1.3_bin_windows64/windows64/hpatchz.exe'
+
+      - name: Publish release folder
+        run: ./version_tools/publish_release.ps1 -OutDir release
+
+      - name: Verify release layout
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $required = @(
+            'release/AngelinaISAssistant.exe',
+            'release/AngelinaISAssistant.dll',
+            'release/AngelinaISAssistant.runtimeconfig.json',
+            'release/DependencySetup_依赖库安装.bat',
+            'release/externals/Serilog.dll',
+            'release/externals/Vortice.Direct3D11.dll',
+            'release/externals/onnxruntime/onnxruntime.dll',
+            'release/tools/hdiffpatch/hpatchz.exe'
+          )
+
+          foreach ($item in $required) {
+            if (-not (Test-Path $item)) { throw "缺少发布文件：$item" }
+          }
+
+          if (-not (Test-Path 'release/runtime/host/fxr')) { throw '缺少 .NET 运行时目录 runtime/host/fxr' }
+
+          $coreDirs = Get-ChildItem 'release/runtime/shared/Microsoft.NETCore.App' -Directory
+          $desktopDirs = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App' -Directory
+          $fxrDirs = Get-ChildItem 'release/runtime/host/fxr' -Directory
+
+          if (-not ($coreDirs.Name -match '^10\.') -or -not ($desktopDirs.Name -match '^10\.') -or -not ($fxrDirs.Name -match '^10\.')) {
+            throw "运行时版本与 net10 不匹配：core=$($coreDirs.Name) desktop=$($desktopDirs.Name) fxr=$($fxrDirs.Name)"
+          }
+
+          $unusedCultures = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App/*' -Directory |
+            Where-Object { $_.Name -match '^[a-z]{2}(-[A-Za-z]{2,4})?$' -and $_.Name -notin @('zh-Hans', 'zh-Hant', 'ja') }
+
+          if ($unusedCultures) { throw "运行时语言目录未裁剪：$($unusedCultures.Name -join ', ')" }
+
+          $size = [math]::Round(((Get-ChildItem release -Recurse -File | Measure-Object Length -Sum).Sum / 1MB), 1)
+          $count = (Get-ChildItem release -Recurse -File).Count
+          Write-Host "release 就绪：$count 个文件，$size MB"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: release-win-x64
+          path: release
+          if-no-files-found: error
+          retention-days: 14
