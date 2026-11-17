@@ -109,6 +109,14 @@ jobs:
 
           if (-not (Test-Path 'release/runtime/host/fxr')) { throw '缺少 .NET 运行时目录 runtime/host/fxr' }
 
+          $coreDirs = Get-ChildItem 'release/runtime/shared/Microsoft.NETCore.App' -Directory
+          $desktopDirs = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App' -Directory
+          $fxrDirs = Get-ChildItem 'release/runtime/host/fxr' -Directory
+
+          if (-not ($coreDirs.Name -match '^10\.') -or -not ($desktopDirs.Name -match '^10\.') -or -not ($fxrDirs.Name -match '^10\.')) {
+            throw "运行时版本与 net10 不匹配：core=$($coreDirs.Name) desktop=$($desktopDirs.Name) fxr=$($fxrDirs.Name)"
+          }
+
           $unusedCultures = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App/*' -Directory |
             Where-Object { $_.Name -match '^[a-z]{2}(-[A-Za-z]{2,4})?$' -and $_.Name -notin @('zh-Hans', 'zh-Hant', 'ja') }
 
@@ -138,16 +146,16 @@ jobs:
         shell: pwsh
 
     steps:
+      - name: Checkout tags (for previous version)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Download release artifact
         uses: actions/download-artifact@v4
         with:
           name: release-win-x64
           path: release
-
-      - name: Checkout tags (for previous version)
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Resolve previous tag
         id: prev
