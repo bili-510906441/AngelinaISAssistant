@@ -8,6 +8,7 @@ LICENSE.txt       HDiffPatch 许可证（MIT，作者 housisong）
 
 零、发布（release 采用自包含部署，内置 .NET 运行时）
   dotnet publish -c Release -r win-x64 --self-contained true -o ..\..\release
+  （或直接 .\publish_release.ps1，默认输出 new_structure\release）
 
   发布目录会自动带上 DependencySetup_依赖库安装.bat，
   用于给没有装 VC++ 运行库的机器补装依赖。
