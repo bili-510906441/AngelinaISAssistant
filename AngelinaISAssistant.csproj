@@ -76,7 +76,7 @@
           CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <!-- 客户端只需要 hpatchz 应用补丁；hdiffz 在 new_structure\version_tools 里，随发布包不分发 -->
+  <!-- 客户端只需要 hpatchz 应用补丁；hdiffz 只在开发侧 version_tools 里，随发布包不分发 -->
   <ItemGroup>
     <None Include="hdiffpatch_v5.1.3_bin_windows64\windows64\hpatchz.exe"
           Link="tools\hdiffpatch\hpatchz.exe"

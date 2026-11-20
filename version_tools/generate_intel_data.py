@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env python3
 """从 tomimi.dev 的集成战略数据生成「关卡名 / 敌人 / 难度」C# 内嵌数据。
 
-数据源（整个 tomimi-dev 仓库保留在 new_structure/user_resources/tomimi-dev-main）：
+数据源（开发侧单独保留的 tomimi-dev 仓库）：
   src/lib/data/stages/ro1.json ... ro6.json         关卡列表（关卡名 / 代码 / levelId）
   src/lib/data/stages/stage_name_lookup_table.json  三种语言的关卡名（含代码前缀）
   src/lib/data/stages/stage_name_overwrite_table.json 变体关卡名称覆盖
@@ -357,7 +357,7 @@ def collect(tomimi_root: str, out_dir: str) -> dict:
         handle.write(
             "本目录的 JSON 由 version_tools/generate_intel_data.py 从 tomimi.dev 的集成战略数据生成，请勿手改。\n"
             "\n"
-            "数据来源（开发侧完整仓库保留在 new_structure/user_resources/tomimi-dev-main）：\n"
+            "数据来源（开发侧单独保留的 tomimi-dev 仓库）：\n"
             "  src/lib/data/stages/ro1.json ... ro6.json\n"
             "  src/lib/data/stages/stage_name_lookup_table.json\n"
             "  src/lib/data/stages/stage_name_overwrite_table.json\n"

@@ -1,4 +1,4 @@
-﻿name: Release
+name: Release
 
 # 只在推 v* 标签时运行；不再出现“分支推送时 release 任务被跳过”的困惑。
 
@@ -36,13 +36,28 @@ jobs:
           name: release-win-x64
           path: release
 
-      - name: Resolve previous tag
+      - name: Resolve previous tag (only the previous version)
         id: prev
         run: |
-          $prev = git describe --tags --abbrev=0 HEAD^ 2>$null
-          if ([string]::IsNullOrWhiteSpace($prev)) { $prev = '' }
+          # 只与「上一个版本」做补丁：按语义版本排序，取当前 tag 之前最近的一个版本。
+          $current = '${{ github.ref_name }}'.TrimStart('v', 'V')
+          $versions = git tag --list 'v*' |
+            ForEach-Object { $_.TrimStart('v', 'V') } |
+            Where-Object { $_ -match '^\d+\.\d+\.\d+$' } |
+            Sort-Object { [version]$_ }
+
+          $prevVersion = $versions |
+            Where-Object { [version]$_ -lt [version]$current } |
+            Select-Object -Last 1
+
+          if ([string]::IsNullOrWhiteSpace($prevVersion)) {
+            $prev = ''
+          } else {
+            $prev = 'v' + $prevVersion
+          }
+
           "tag=$prev" >> $env:GITHUB_OUTPUT
-          Write-Host "previous tag = '$prev'"
+          Write-Host "previous version tag = '$prev'（只与上一个版本做补丁）"
 
       - name: Download previous release
         id: prevzip

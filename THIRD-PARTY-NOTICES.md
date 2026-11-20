@@ -11,7 +11,7 @@
 - 版本：v5.1.3（windows64 构建）
 - 版权：Copyright (c) 2012-2025 housisong
 - 许可证：MIT License，全文见 `tools/hdiffpatch/LICENSE.txt`
-- 本项目使用范围：随程序分发的 `hpatchz.exe`，用于应用增量更新包；`hdiffz.exe`（生成补丁）只在开发侧的 `new_structure\version_tools` 中使用，不随发布包分发
+- 本项目使用范围：随程序分发的 `hpatchz.exe`，用于应用增量更新包；`hdiffz.exe`（生成补丁）只在开发侧的 `version_tools` 中使用，不随发布包分发
 
 ## 3. Serilog
 
@@ -77,7 +77,7 @@ https://github.com/bili-510906441/AngelinaISAssistant
   （`src/lib/data/stages/ro1.json ... ro6.json`、`stage_name_lookup_table.json`、
   `stage_name_overwrite_table.json`、`ro_stage_data/roN/*.json`、
   `src/lib/data/enemy/enemy_database.json`、`src/lib/data/is/<topic>/difficulty_mods*.json`）；
-  开发侧完整仓库保留在 `new_structure/user_resources/tomimi-dev-main`
+  开发侧单独保留完整仓库（不随本仓库分发）
 - 版权：关卡名称、敌人数据与相关游戏数据版权归上海鹰角网络科技有限公司（Hypergryph）所有
 - 本项目使用范围：在悬浮遮罩上提示「识别到{关卡名}」，并在敌方情报页按当前难度/层数计算、
   显示敌人数值；不随发布包分发 tomimi.dev 的源码或原始关卡数据文件

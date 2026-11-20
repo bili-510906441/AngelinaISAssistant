@@ -41,7 +41,7 @@ MaskOverlayWindow.UpdateOverlay()
 - **数据来源**：tomimi.dev 的集成战略数据
   （`ro1.json … ro6.json`、`stage_name_lookup_table.json`、`stage_name_overwrite_table.json`、
   `ro_stage_data/roN/*.json`）。整个 tomimi-dev 仓库保留在
-  `new_structure/user_resources/tomimi-dev-main`，后续做「关卡数值 / 路线模拟」等功能时继续取用。
+  开发侧单独保留的 tomimi-dev 仓库，后续做「关卡数值 / 路线模拟」等功能时继续取用。
 - **支持中 / 英 / 日三种语言**的关卡名；标点是名字本身的一部分（`所守者，义` 能识别，
   逗号被 OCR 漏掉也按 `所守者义` 命中）；`谤天(单)/谤天(双)` 这类变体名归一化成 `谤天`；
   数据后缀（`_b`、`_dlc1`）也会去掉。

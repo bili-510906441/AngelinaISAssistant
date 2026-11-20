@@ -2,20 +2,26 @@
 bin/
 obj/
 
-# CI 产出
+# CI / 本地发布产物
 release/
+release_old/
 patch_verify/
 prev/
 prev_release/
+*.aisapatch
+*_full.zip
 
 # 调试符号
 *.pdb
 
-# 用户配置 / 日志
+# 用户配置 / 日志（运行时生成，含个人设置）
 *.log
-
-# 便携数据（运行时生成）
 config/
 
-# DirectML 版 ONNX Runtime（二进制不入库）
-libs/onnxruntime_dml/*.dll
+# IDE / 本机缓存
+.vs/
+TestResults/
+*.user
+*.suo
+
+# 注意：libs/onnxruntime 与 libs/onnxruntime_dml 的原生库随仓库分发（CI 构建与发布需要），不要忽略。

@@ -1,6 +1,6 @@
 本目录的 JSON 由 version_tools/generate_intel_data.py 从 tomimi.dev 的集成战略数据生成，请勿手改。
 
-数据来源（开发侧完整仓库保留在 new_structure/user_resources/tomimi-dev-main）：
+数据来源（开发侧单独保留的 tomimi-dev 仓库）：
   src/lib/data/stages/ro1.json ... ro6.json
   src/lib/data/stages/stage_name_lookup_table.json
   src/lib/data/stages/stage_name_overwrite_table.json

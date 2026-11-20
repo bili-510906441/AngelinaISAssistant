@@ -8,7 +8,7 @@ LICENSE.txt       HDiffPatch 许可证（MIT，作者 housisong）
 
 零、发布（release 采用自包含部署，内置 .NET 运行时）
   dotnet publish -c Release -r win-x64 --self-contained true -o ..\..\release
-  （或直接 .\publish_release.ps1，默认输出 new_structure\release）
+  （或直接 .\publish_release.ps1，默认输出到 code 的上一级 release 目录）
 
   发布目录会自动带上 DependencySetup_依赖库安装.bat，
   用于给没有装 VC++ 运行库的机器补装依赖。
@@ -93,7 +93,7 @@ LICENSE.txt       HDiffPatch 许可证（MIT，作者 housisong）
     enemies.json      关卡引用到的敌人：三语名字、类型、各等级数值、form_mods、traits
     difficulty.json   六个主题各难度的修正效果与楼层成长系数
   这些文件随主工程编译进 DLL（EmbeddedResource），发布包不额外携带文件。
-  tomimi-dev 完整仓库保留在 new_structure\user_resources\tomimi-dev-main，
+  tomimi-dev 完整仓库在开发侧单独保留（不随本仓库分发），
   后续做关卡数值 / 路线模拟等功能可继续取用。
 
   重新生成（在 code 目录下）：

@@ -1,7 +1,7 @@
 ﻿# 发布 release（自包含运行时放在 runtime\ 子目录，根目录保持干净）
 #
 # 用法：
-#   .\publish_release.ps1                     # 输出到 new_structure\release
+#   .\publish_release.ps1                     # 输出到上级目录的 release
 #   .\publish_release.ps1 -OutDir D:\x\rel
 
 param(
