@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj": {}
+    "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {}
   },
   "projects": {
-    "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj": {
+    "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj",
+        "projectUniqueName": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
         "projectName": "AngelinaISAssistant",
-        "projectPath": "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj",
+        "projectPath": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
         "packagesPath": "C:\\Users\\Angelina\\.nuget\\packages\\",
-        "outputPath": "D:\\1233333\\new_structure\\code\\obj\\",
+        "outputPath": "D:\\github_sync\\AngelinaISAssistant\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Angelina\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -378,11 +378,6 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
         }
       }
     }

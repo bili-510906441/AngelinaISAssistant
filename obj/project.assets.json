@@ -147,153 +147,6 @@
           }
         }
       }
-    },
-    "net10.0-windows10.0.26100.0/win-x64": {
-      "Serilog/4.2.0": {
-        "type": "package",
-        "compile": {
-          "lib/net9.0/Serilog.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net9.0/Serilog.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Serilog.Sinks.File/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Serilog": "4.0.0"
-        },
-        "compile": {
-          "lib/net8.0/Serilog.Sinks.File.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Serilog.Sinks.File.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "SharpGen.Runtime/2.2.0-beta": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/SharpGen.Runtime.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/SharpGen.Runtime.dll": {}
-        },
-        "build": {
-          "build/_._": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/_._": {}
-        }
-      },
-      "SharpGen.Runtime.COM/2.2.0-beta": {
-        "type": "package",
-        "dependencies": {
-          "SharpGen.Runtime": "2.2.0-beta"
-        },
-        "compile": {
-          "lib/net8.0/SharpGen.Runtime.COM.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/SharpGen.Runtime.COM.dll": {}
-        },
-        "build": {
-          "build/_._": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/_._": {}
-        }
-      },
-      "Vortice.Direct3D11/3.6.2": {
-        "type": "package",
-        "dependencies": {
-          "SharpGen.Runtime": "2.2.0-beta",
-          "Vortice.DXGI": "3.6.2"
-        },
-        "compile": {
-          "lib/net8.0/Vortice.Direct3D11.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Vortice.Direct3D11.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "build/Vortice.Direct3D11.props": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/Vortice.Direct3D11.props": {}
-        }
-      },
-      "Vortice.DirectX/3.6.2": {
-        "type": "package",
-        "dependencies": {
-          "SharpGen.Runtime": "2.2.0-beta",
-          "SharpGen.Runtime.COM": "2.2.0-beta",
-          "Vortice.Mathematics": "1.9.2"
-        },
-        "compile": {
-          "lib/net8.0-windows10.0.19041/Vortice.DirectX.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0-windows10.0.19041/Vortice.DirectX.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "build/_._": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/_._": {}
-        }
-      },
-      "Vortice.DXGI/3.6.2": {
-        "type": "package",
-        "dependencies": {
-          "SharpGen.Runtime": "2.2.0-beta",
-          "Vortice.DirectX": "3.6.2"
-        },
-        "compile": {
-          "lib/net8.0-windows10.0.19041/Vortice.DXGI.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0-windows10.0.19041/Vortice.DXGI.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "build/_._": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/_._": {}
-        }
-      },
-      "Vortice.Mathematics/1.9.2": {
-        "type": "package",
-        "compile": {
-          "lib/net9.0-windows10.0.19041/Vortice.Mathematics.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net9.0-windows10.0.19041/Vortice.Mathematics.dll": {
-            "related": ".pdb;.xml"
-          }
-        }
-      }
     }
   },
   "libraries": {
@@ -477,11 +330,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj",
+      "projectUniqueName": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
       "projectName": "AngelinaISAssistant",
-      "projectPath": "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj",
+      "projectPath": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
       "packagesPath": "C:\\Users\\Angelina\\.nuget\\packages\\",
-      "outputPath": "D:\\1233333\\new_structure\\code\\obj\\",
+      "outputPath": "D:\\github_sync\\AngelinaISAssistant\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Angelina\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -848,11 +701,6 @@
           "System.Xml.XPath": "(,4.3.32767]",
           "System.Xml.XPath.XDocument": "(,5.0.32767]"
         }
-      }
-    },
-    "runtimes": {
-      "win-x64": {
-        "#import": []
       }
     }
   }
