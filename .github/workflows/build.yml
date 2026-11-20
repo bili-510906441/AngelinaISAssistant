@@ -16,6 +16,7 @@ jobs:
   build:
     name: Build, test and publish (win-x64)
     runs-on: windows-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: pwsh
@@ -40,8 +41,83 @@ jobs:
       - name: Build (Release, warnings as errors)
         run: dotnet build AngelinaISAssistant.csproj -c Release -r win-x64 --no-restore -warnaserror
 
+      # 卡死根因：App 构造函数会把 OnStartup 投递到 Dispatcher 队列，SmokeTest
+      # 第一次 Pump() 时真的会执行 App.OnStartup（不需要 Application.Run）。
+      # CI 上 config 不存在，OnStartup 排队的 ShowConfigNoticeIfAny 会弹出
+      # 「悲报：配置文件缺失」模态对话框并一直等用户点确定——本地点掉看起来
+      # 正常，CI 没人点就永远卡住（还额外创建了第二个主窗口，所以会看到两个
+      # 窗口）。这里在运行前先放一份合法的 settings.json，避免任何配置弹窗；
+      # 同时关闭 OCR 后端（AISA_NO_OCR=1），避免无 GPU 的 runner 上做
+      # DirectML/OCR 预热。最后仍加超时兜底，防止以后再有模态框卡住 job。
       - name: Smoke test (window shell / resources)
-        run: dotnet run --project auto_test/SmokeTest/SmokeTest.csproj -c Release
+        env:
+          AISA_NO_OCR: "1"
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          dotnet build auto_test/SmokeTest/SmokeTest.csproj -c Release
+
+          $outDir = Get-ChildItem 'auto_test/SmokeTest/bin/Release' -Directory |
+            Where-Object { Test-Path (Join-Path $_.FullName 'SmokeTest.dll') } |
+            Select-Object -First 1
+
+          if (-not $outDir) { throw '未找到 SmokeTest 输出目录' }
+
+          $configDir = Join-Path $outDir.FullName 'config'
+          New-Item -ItemType Directory -Force $configDir | Out-Null
+
+          $settingsJson = @'
+          {
+            "Language": "",
+            "UpdatePreference": "Incremental",
+            "InferenceGpu": -2,
+            "CaptureBackend": "Wgc",
+            "HotkeyShowHide": "Ctrl+Shift+Alt+A",
+            "LiveAssist": "None",
+            "NumberFormat": "Wan",
+            "ShowAdvancedSettings": false,
+            "SoftwareRendering": false
+          }
+          '@
+
+          Set-Content -Path (Join-Path $configDir 'settings.json') -Value $settingsJson -Encoding utf8
+
+          # 用 .NET Process 直接启动（Start-Process 取不到可靠的 ExitCode），
+          # 输出用异步读取避免管道写满；超时则杀掉整个进程树并打印最后输出。
+          $psi = [System.Diagnostics.ProcessStartInfo]::new()
+          $psi.FileName = 'dotnet'
+          $psi.Arguments = 'run --project auto_test/SmokeTest/SmokeTest.csproj -c Release --no-build'
+          $psi.UseShellExecute = $false
+          $psi.RedirectStandardOutput = $true
+          $psi.RedirectStandardError = $true
+          $psi.CreateNoWindow = $true
+
+          $proc = [System.Diagnostics.Process]::new()
+          $proc.StartInfo = $psi
+          $null = $proc.Start()
+
+          $stdoutTask = $proc.StandardOutput.ReadToEndAsync()
+          $stderrTask = $proc.StandardError.ReadToEndAsync()
+          $timeoutMs = 240000
+
+          if (-not $proc.WaitForExit($timeoutMs)) {
+            & taskkill /PID $proc.Id /T /F | Out-Null
+            $null = $proc.WaitForExit(5000)
+            Write-Host '--- SmokeTest 超时，最后输出 ---'
+            if ($stdoutTask.Wait(2000)) { Write-Host $stdoutTask.Result }
+            if ($stderrTask.Wait(2000)) { Write-Host $stderrTask.Result }
+            throw "SmokeTest 在 $($timeoutMs / 1000) 秒内没有结束（疑似被模态对话框卡住）"
+          }
+
+          $null = $proc.WaitForExit()
+          if ($stdoutTask.Result) { Write-Host $stdoutTask.Result }
+          if ($stderrTask.Result) {
+            Write-Host '--- stderr ---'
+            Write-Host $stderrTask.Result
+          }
+
+          if ($proc.ExitCode -ne 0) { throw "SmokeTest 失败，退出码 $($proc.ExitCode)" }
+          Write-Host 'SmokeTest OK'
 
       - name: Config robustness test (missing / corrupted)
         run: dotnet run --project auto_test/ConfigTest/ConfigTest.csproj -c Release
