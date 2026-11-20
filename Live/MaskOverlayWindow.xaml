@@ -14,6 +14,9 @@
         Focusable="False">
 
     <Grid>
+        <!-- 识别结果层：坐标由后端给出（物理像素），这里换算成 DIP -->
+        <Canvas x:Name="OverlayCanvas" IsHitTestVisible="False" />
+
         <!-- 左侧垂直居中：适配不同分辨率 -->
         <StackPanel x:Name="OverlayPanel"
                     HorizontalAlignment="Left"

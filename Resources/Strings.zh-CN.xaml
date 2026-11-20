@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
@@ -23,14 +23,12 @@
     <!-- 实时辅助 -->
     <sys:String x:Key="Str.Live.Title">实时辅助</sys:String>
     <sys:String x:Key="Str.Live.Subtitle">在集成战略对局过程中，查看实时提示与参考信息。</sys:String>
-    <sys:String x:Key="Str.Live.EmptyState">还没有可显示的实时信息</sys:String>
     <sys:String x:Key="Str.Preview.Title">屏幕预览</sys:String>
     <sys:String x:Key="Str.Preview.Fps">预览帧率</sys:String>
 
     <!-- 输出日志 -->
     <sys:String x:Key="Str.Log.Title">输出日志</sys:String>
     <sys:String x:Key="Str.Log.Subtitle">查询与运行过程的日志会按时间顺序显示在这里。</sys:String>
-    <sys:String x:Key="Str.Log.Empty">暂无日志输出。</sys:String>
 
     <!-- 设置 -->
     <sys:String x:Key="Str.Settings.Title">设置</sys:String>
@@ -44,12 +42,6 @@
     <!-- 连接设置 -->
     <sys:String x:Key="Str.Connection.Title">连接设置</sys:String>
     <sys:String x:Key="Str.Connection.Subtitle">选择实时辅助使用的画面采集方式。</sys:String>
-    <sys:String x:Key="Str.Connection.Server">服务地址</sys:String>
-    <sys:String x:Key="Str.Connection.Port">端口</sys:String>
-    <sys:String x:Key="Str.Connection.Behavior">连接行为</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnect">断线后自动重连</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnectHint">连接中断时自动尝试恢复。</sys:String>
-    <sys:String x:Key="Str.Connection.Save">保存连接设置</sys:String>
 
     <!-- 更新设置 -->
     <sys:String x:Key="Str.Update.Title">更新设置</sys:String>
@@ -79,7 +71,6 @@
     <sys:String x:Key="Str.Appearance.Title">外观设置</sys:String>
     <sys:String x:Key="Str.Appearance.Subtitle">选择界面配色，切换后立即生效。</sys:String>
     <sys:String x:Key="Str.Appearance.Theme">主题</sys:String>
-    <sys:String x:Key="Str.Appearance.DarkMode">深色模式</sys:String>
     <sys:String x:Key="Str.Appearance.Note">切换后整个窗口与标题栏会一起变化。</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTop">始终置顶</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTopHint">让窗口保持在其他窗口之上。</sys:String>
@@ -146,7 +137,6 @@
     <sys:String x:Key="Str.Confirm.Cancel">取消</sys:String>
     <sys:String x:Key="Str.Confirm.Restart">立即重启</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmHeadline">需要重启应用</sys:String>
-    <sys:String x:Key="Str.SoftwareRender.ConfirmBody">修改「使用软件渲染」后需要完全重启应用才会生效。&#10;这会导致性能下降、界面卡顿、CPU 占用率过高等后果。&#10;是否立即重启？</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine1">修改「使用软件渲染」后需要完全重启应用才会生效。</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine2">这会导致性能下降、界面卡顿、CPU 占用率过高等后果。</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine3">是否立即重启？</sys:String>
@@ -223,4 +213,34 @@
     <sys:String x:Key="Str.Hotkey.OwnerHint">关闭本窗口后 10 秒内按下该热键，可以尝试识别占用它的程序。</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerFound">占用进程：{0}（PID {1}）</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerUnknown">无法确定占用者：按下热键后没有其他程序来到前台，它可能没有可见窗口。</sys:String>
+    <sys:String x:Key="Str.Live.Group.Out">局外</sys:String>
+    <sys:String x:Key="Str.Live.RelicRecord">收藏品记录</sys:String>
+    <sys:String x:Key="Str.Live.StageValues">关卡数值计算</sys:String>
+    <sys:String x:Key="Str.Live.Group.In">局内</sys:String>
+    <sys:String x:Key="Str.Live.BattleAssist">实时战斗辅助</sys:String>
+    <sys:String x:Key="Str.Live.EnemyHealth">敌人血量检测</sys:String>
+    <sys:String x:Key="Str.Live.SpecialStage">特殊关卡详细辅助</sys:String>
+    <sys:String x:Key="Str.Live.Group.Common">通用</sys:String>
+    <sys:String x:Key="Str.Live.None">暂无</sys:String>
+    <sys:String x:Key="Str.Live.BackendUnavailable">识别后端未就绪：缺少 models\ppocr 模型或 ONNX Runtime。</sys:String>
+    <sys:String x:Key="Str.Config.MissingHeadline">配置文件缺失</sys:String>
+    <sys:String x:Key="Str.Config.MissingBody">未找到 config\settings.json，已使用内置默认配置启动。请不要手动修改或删除 config 文件夹，程序会自动重建。</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedHeadline">配置文件已损坏</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedBody">配置文件已损坏，已保留可读取的 {0} 项设置，其余恢复为默认配置；原文件已备份为 {1}。请不要手动修改或删除 config 文件夹。</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableHeadline">配置文件无法读取</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableBody">读取 config\settings.json 时出错（{0}），已使用内置默认配置启动。请不要手动修改或删除 config 文件夹。</sys:String>
+
+    <!-- 托盘图标 -->
+    <sys:String x:Key="Str.Tray.Open">打开主界面</sys:String>
+    <sys:String x:Key="Str.Tray.Exit">退出程序</sys:String>
+
+    <!-- 同目录多开 -->
+    <sys:String x:Key="Str.Instance.Headline">程序已在运行</sys:String>
+    <sys:String x:Key="Str.Instance.Body">同一目录下已经有一个本程序在运行（可能是热键隐藏到了右下角「^」托盘里）。请从托盘打开它，这里不会重复启动。</sys:String>
+    <!-- 敌人数值显示格式（实时辅助 → 敌方情报） -->
+    <sys:String x:Key="Str.NumberFormat.Label">数值显示格式</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Hint">敌方情报页里计算出的敌人数值怎么显示：万（一位小数）、科学计数法，或完整数字。</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Wan">35.8w（万，一位小数）</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Scientific">科学计数法（3.58e5）</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Plain">完整数字（358000）</sys:String>
 </ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿name: Build
+name: Build
 
 on:
   workflow_call:
@@ -42,6 +42,9 @@ jobs:
 
       - name: Smoke test (window shell / resources)
         run: dotnet run --project auto_test/SmokeTest/SmokeTest.csproj -c Release
+
+      - name: Config robustness test (missing / corrupted)
+        run: dotnet run --project auto_test/ConfigTest/ConfigTest.csproj -c Release
 
       - name: Folder patch test (hdiffz + hpatchz)
         run: |
@@ -91,7 +94,10 @@ jobs:
             'release/DependencySetup_依赖库安装.bat',
             'release/externals/Serilog.dll',
             'release/externals/Vortice.Direct3D11.dll',
-            'release/externals/onnxruntime/onnxruntime.dll',
+            'release/externals/onnxruntime.dll',
+            'release/models/ppocr/PP-OCRv6_small_det.onnx',
+            'release/models/ppocr/PP-OCRv6_small_rec.onnx',
+            'release/models/ppocr/keys.txt',
             'release/tools/hdiffpatch/hpatchz.exe'
           )
 
@@ -109,10 +115,24 @@ jobs:
             throw "运行时版本与 net10 不匹配：core=$($coreDirs.Name) desktop=$($desktopDirs.Name) fxr=$($fxrDirs.Name)"
           }
 
-          $unusedCultures = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App/*' -Directory |
-            Where-Object { $_.Name -match '^[a-z]{2}(-[A-Za-z]{2,4})?$' -and $_.Name -notin @('zh-Hans', 'zh-Hant', 'ja') }
+          # externals 结构：依赖 dll 平铺 + locales\<culture> 卫星资源
+          $locales = @('cs', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pl', 'pt-BR', 'ru', 'tr', 'zh-Hans', 'zh-Hant')
+          foreach ($culture in $locales) {
+            if (-not (Test-Path "release/externals/locales/$culture")) { throw "缺少 locales/$culture" }
+          }
 
-          if ($unusedCultures) { throw "运行时语言目录未裁剪：$($unusedCultures.Name -join ', ')" }
+          if (-not (Test-Path 'release/externals/locales/ja/PresentationFramework.resources.dll')) {
+            throw 'locales/ja 里没有 WPF 卫星资源'
+          }
+
+          if (-not (Test-Path 'release/externals/onnxruntime_LICENSE.txt')) {
+            throw '缺少 onnxruntime 许可证'
+          }
+
+          $frameworkLocales = Get-ChildItem 'release/runtime/shared/Microsoft.WindowsDesktop.App/*' -Directory |
+            Where-Object { $_.Name -match '^[a-z]{2,3}(-[A-Za-z]{2,4})?$' }
+
+          if ($frameworkLocales) { throw "运行时目录里不应再有语言子目录：$($frameworkLocales.Name -join ', ')" }
 
           $size = [math]::Round(((Get-ChildItem release -Recurse -File | Measure-Object Length -Sum).Sum / 1MB), 1)
           $count = (Get-ChildItem release -Recurse -File).Count

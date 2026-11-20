@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime">
     <sys:String x:Key="Str.App.Name">アンジェリーナ統合戦略アシスタント</sys:String>
@@ -10,12 +10,10 @@
     <sys:String x:Key="Str.Runtime.OpenPage">今すぐダウンロードページを開きますか？</sys:String>
     <sys:String x:Key="Str.Live.Title">リアルタイム支援</sys:String>
     <sys:String x:Key="Str.Live.Subtitle">統合戦略のプレイ中に、リアルタイムのヒントと参考情報を確認できます。</sys:String>
-    <sys:String x:Key="Str.Live.EmptyState">表示できるリアルタイム情報はまだありません</sys:String>
     <sys:String x:Key="Str.Preview.Title">画面プレビュー</sys:String>
     <sys:String x:Key="Str.Preview.Fps">プレビュー FPS</sys:String>
     <sys:String x:Key="Str.Log.Title">出力ログ</sys:String>
     <sys:String x:Key="Str.Log.Subtitle">検索と実行のログが時系列でここに表示されます。</sys:String>
-    <sys:String x:Key="Str.Log.Empty">ログ出力はまだありません。</sys:String>
     <sys:String x:Key="Str.Settings.Title">設定</sys:String>
     <sys:String x:Key="Str.Settings.Search">設定を検索</sys:String>
     <sys:String x:Key="Str.SettingsNav.Connection">接続設定</sys:String>
@@ -25,12 +23,6 @@
     <sys:String x:Key="Str.SettingsNav.About">このアプリについて</sys:String>
     <sys:String x:Key="Str.Connection.Title">接続設定</sys:String>
     <sys:String x:Key="Str.Connection.Subtitle">リアルタイム支援で使用する画面キャプチャ方法を選択します。</sys:String>
-    <sys:String x:Key="Str.Connection.Server">サーバーアドレス</sys:String>
-    <sys:String x:Key="Str.Connection.Port">ポート</sys:String>
-    <sys:String x:Key="Str.Connection.Behavior">接続動作</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnect">切断後に自動再接続</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnectHint">接続が切れたときに自動で復帰を試みます。</sys:String>
-    <sys:String x:Key="Str.Connection.Save">接続設定を保存</sys:String>
     <sys:String x:Key="Str.Update.Title">更新設定</sys:String>
     <sys:String x:Key="Str.Update.Subtitle">新しいバージョンの自動確認と、前回の確認日時を管理します。</sys:String>
     <sys:String x:Key="Str.Update.Auto">自動で更新を確認</sys:String>
@@ -56,7 +48,6 @@
     <sys:String x:Key="Str.Appearance.Title">外観設定</sys:String>
     <sys:String x:Key="Str.Appearance.Subtitle">画面の配色を選択します。切り替えはすぐに反映されます。</sys:String>
     <sys:String x:Key="Str.Appearance.Theme">テーマ</sys:String>
-    <sys:String x:Key="Str.Appearance.DarkMode">ダークモード</sys:String>
     <sys:String x:Key="Str.Appearance.Note">切り替えるとウィンドウ全体とタイトルバーが一緒に変わります。</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTop">常に最前面</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTopHint">ウィンドウを他のウィンドウより前面に保ちます。</sys:String>
@@ -113,7 +104,6 @@
     <sys:String x:Key="Str.Confirm.Cancel">キャンセル</sys:String>
     <sys:String x:Key="Str.Confirm.Restart">今すぐ再起動</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmHeadline">アプリの再起動が必要です</sys:String>
-    <sys:String x:Key="Str.SoftwareRender.ConfirmBody">「ソフトウェアレンダリングを使用」の変更は、アプリを完全に再起動しないと反映されません。&#10;パフォーマンス低下、UI のカクつき、CPU 使用率の上昇などを招く可能性があります。&#10;今すぐ再起動しますか？</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine1">「ソフトウェアレンダリングを使用」の変更は、アプリを完全に再起動しないと反映されません。</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine2">パフォーマンス低下、UI のカクつき、CPU 使用率の上昇などを招く可能性があります。</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine3">今すぐ再起動しますか？</sys:String>
@@ -190,4 +180,34 @@
     <sys:String x:Key="Str.Hotkey.OwnerHint">このウィンドウを閉じてから 10 秒以内にそのホットキーを押すと、使用しているプログラムを特定できる場合があります。</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerFound">使用中のプロセス：{0}（PID {1}）</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerUnknown">使用元を特定できませんでした：ホットキーを押しても他のプログラムが前面に来ませんでした。表示ウィンドウがない可能性があります。</sys:String>
+    <sys:String x:Key="Str.Live.Group.Out">局外</sys:String>
+    <sys:String x:Key="Str.Live.RelicRecord">収蔵品記録</sys:String>
+    <sys:String x:Key="Str.Live.StageValues">ステージ数値計算</sys:String>
+    <sys:String x:Key="Str.Live.Group.In">局内</sys:String>
+    <sys:String x:Key="Str.Live.BattleAssist">リアルタイム戦闘支援</sys:String>
+    <sys:String x:Key="Str.Live.EnemyHealth">敵HP検知</sys:String>
+    <sys:String x:Key="Str.Live.SpecialStage">特殊ステージ詳細支援</sys:String>
+    <sys:String x:Key="Str.Live.Group.Common">共通</sys:String>
+    <sys:String x:Key="Str.Live.None">なし</sys:String>
+    <sys:String x:Key="Str.Live.BackendUnavailable">認識バックエンドが未準備です：models\ppocr のモデルまたは ONNX Runtime がありません。</sys:String>
+    <sys:String x:Key="Str.Config.MissingHeadline">設定ファイルが見つかりません</sys:String>
+    <sys:String x:Key="Str.Config.MissingBody">config\settings.json が見つからないため、内蔵の既定設定で起動しました。config フォルダーは手動で変更・削除しないでください。自動的に再作成されます。</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedHeadline">設定ファイルが破損しています</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedBody">config\settings.json が破損しています。読み取れた {0} 項目を保持し、残りは既定値に戻しました。元のファイルは {1} としてバックアップ済みです。config フォルダーは手動で変更・削除しないでください。</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableHeadline">設定ファイルを読み取れません</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableBody">config\settings.json の読み取りに失敗しました（{0}）。内蔵の既定設定で起動しました。config フォルダーは手動で変更・削除しないでください。</sys:String>
+
+    <!-- タスクトレイ -->
+    <sys:String x:Key="Str.Tray.Open">メイン画面を開く</sys:String>
+    <sys:String x:Key="Str.Tray.Exit">終了</sys:String>
+
+    <!-- 同一フォルダーでの二重起動 -->
+    <sys:String x:Key="Str.Instance.Headline">すでに起動しています</sys:String>
+    <sys:String x:Key="Str.Instance.Body">同じフォルダーで本アプリがすでに実行中です（ホットキーで右下の「^」タスクトレイに隠れている場合があります）。タスクトレイから開いてください。ここでは二重起動しません。</sys:String>
+    <!-- 敵の数値の表示形式（リアルタイム補助 → 敵情報） -->
+    <sys:String x:Key="Str.NumberFormat.Label">数値の表示形式</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Hint">敵情報画面で計算した敵の数値の表示形式：万（小数1桁）、指数表記、そのままの数値。</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Wan">35.8w（万、小数1桁）</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Scientific">指数表記（3.58e5）</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Plain">そのままの数値（358000）</sys:String>
 </ResourceDictionary>

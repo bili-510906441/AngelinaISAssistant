@@ -34,7 +34,7 @@ LICENSE.txt       HDiffPatch 许可证（MIT，作者 housisong）
   - -p-8      8 线程
 
   产物：angelina_isa_v{旧}_v{新}.aisapatch（默认输出到 NewDir 上一级）
-  脚本会先剔除 _update_stage / _update_pkg / reports / logs / *.log，
+  脚本会先剔除 _update_stage / _update_pkg / config / reports / logs / *.log，
   保证补丁只描述发布内容。
 
 三、客户端应用（release 内已实现）
@@ -59,3 +59,43 @@ LICENSE.txt       HDiffPatch 许可证（MIT，作者 housisong）
   - push / PR：构建（告警即失败）+ 冒烟测试 + 文件夹补丁测试 + 发布 + 布局校验 + 上传 artifact
   - 打 v* 标签：额外产出 angelina_isa_v{新}_full.zip，并自动用「上一个 tag 的 full.zip」
     生成本次增量包 angelina_isa_v{旧}_v{新}.aisapatch，应用校验一致后一并挂到 Release
+
+七、发布目录里的 externals（与 examples 一致）
+  externals\
+    Serilog.dll / Vortice.*.dll / SharpGen.*.dll / WinRT.Runtime.dll
+    Microsoft.Windows.SDK.NET.dll
+    onnxruntime.dll / onnxruntime_providers_shared.dll
+    onnxruntime_LICENSE.txt
+    onnxruntime_dml\
+      onnxruntime.dll / onnxruntime_providers_shared.dll / DirectML.dll
+      ORT-LICENSE.txt / DirectML-LICENSE.txt / DirectML-ThirdPartyNotices.txt
+      ← DirectML 推理（设置里的「使用 GPU 加速推理」）
+    locales\
+      cs\ de\ es\ fr\ it\ ja\ ko\ pl\ pt-BR\ ru\ tr\ zh-Hans\ zh-Hant\
+        *.resources.dll   ← WPF 卫星资源，由 App 的程序集解析器按语言加载
+
+  运行时目录 runtime\shared\... 下不再保留语言子目录；
+  App 通过 externals\locales\<culture>\<name>.dll 解析（含 zh-Hant → zh 回退）。
+
+八、便携数据目录
+  程序产生的全部个性化数据都在程序目录下，随 release 包一起移动：
+    config\settings.json   界面语言、主题、热键、采集方式、实时辅助勾选等
+    config\logs\           运行日志（按天滚动）
+    config\reports\        崩溃报告与待提示标记
+
+  旧版本存放在 %AppData%\AngelinaISAssistant 的 settings.json 会在首次启动时自动迁移到
+  config\settings.json；更新包不会覆盖或删除 config 目录。
+
+九、实时辅助的集成战略内嵌数据（Live\Intel\data）
+  generate_intel_data.py 从 tomimi.dev 的集成战略数据生成四个 JSON：
+    stage_names.json  关卡名别名（中/英/日、标点、变体名归一化、levelId、主题）
+    stages.json       关卡代码 / 主题 / 变体修正（n_mods、all_mods、elite_mods）/ 紧急作战敌人替换 / 敌人列表
+    enemies.json      关卡引用到的敌人：三语名字、类型、各等级数值、form_mods、traits
+    difficulty.json   六个主题各难度的修正效果与楼层成长系数
+  这些文件随主工程编译进 DLL（EmbeddedResource），发布包不额外携带文件。
+  tomimi-dev 完整仓库保留在 new_structure\user_resources\tomimi-dev-main，
+  后续做关卡数值 / 路线模拟等功能可继续取用。
+
+  重新生成（在 code 目录下）：
+    python version_tools\generate_intel_data.py
+    python version_tools\generate_intel_data.py --tomimi <tomimi-dev-main 路径> --out <输出目录>

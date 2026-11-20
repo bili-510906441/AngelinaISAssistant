@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>annotations</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>OcrTest</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AngelinaISAssistant.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\libs\onnxruntime\onnxruntime.dll"
+          Link="onnxruntime\onnxruntime.dll"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\libs\onnxruntime\onnxruntime_providers_shared.dll"
+          Link="onnxruntime\onnxruntime_providers_shared.dll"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\models\ppocr\PP-OCRv6_small_det.onnx"
+          Link="models\ppocr\PP-OCRv6_small_det.onnx"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\models\ppocr\PP-OCRv6_small_rec.onnx"
+          Link="models\ppocr\PP-OCRv6_small_rec.onnx"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\models\ppocr\keys.txt"
+          Link="models\ppocr\keys.txt"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

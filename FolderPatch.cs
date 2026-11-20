@@ -19,6 +19,7 @@ internal static class FolderPatch
     {
         "_update_stage",
         "_update_pkg",
+        "config",
         "reports",
         "logs"
     };

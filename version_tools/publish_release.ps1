@@ -15,6 +15,15 @@ $codeDir = Join-Path $PSScriptRoot '..'
 $OutDir = [System.IO.Path]::GetFullPath($OutDir)
 
 Write-Host "发布到：$OutDir"
+
+# 覆盖发布时保留用户数据（config 目录随包便携）
+$configBackup = Join-Path $env:TEMP ("aisa_config_" + [Guid]::NewGuid().ToString('N'))
+$hasConfig = Test-Path (Join-Path $OutDir 'config')
+
+if ($hasConfig) {
+    Copy-Item (Join-Path $OutDir 'config') $configBackup -Recurse -Force
+}
+
 if (Test-Path $OutDir) { Remove-Item $OutDir -Recurse -Force }
 
 Push-Location $codeDir
@@ -88,27 +97,39 @@ if ($LASTEXITCODE -ge 8) { throw "复制 NETCore 运行时失败：$LASTEXITCODE
 robocopy (Join-Path $desktop.Dir $desktopVer) (Join-Path $runtime "shared\Microsoft.WindowsDesktop.App\$desktopVer") /E /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "复制 WindowsDesktop 运行时失败：$LASTEXITCODE" }
 
-# 只保留界面支持的语言（简体/繁体/日语）；英文是内置中性资源，没有独立目录。
-# 这些目录里只有 *.resources.dll 卫星程序集，删掉后 .NET/WPF 会回退到英文中性资源。
-$keepCultures = @('zh-Hans', 'zh-Hant', 'ja')
-$desktopShared = Join-Path $runtime "shared\Microsoft.WindowsDesktop.App\$desktopVer"
-$removed = 0
+# 把所有 WPF 卫星资源按示例搬到 externals\locales\<culture>\，
+# 运行时目录里不再保留语言子目录；具体语言由 App 的程序集解析器加载。
+$localesRoot = Join-Path $OutDir 'externals\locales'
+New-Item -ItemType Directory -Force $localesRoot | Out-Null
 
-Get-ChildItem $desktopShared -Directory | Where-Object {
-    $_.Name -match '^[a-z]{2}(-[A-Za-z]{2,4})?$' -and $keepCultures -notcontains $_.Name
-} | ForEach-Object {
-    $files = Get-ChildItem $_.FullName -Recurse -File
-    $foreign = $files | Where-Object { $_.Name -notlike '*.resources.dll' }
+$movedLocales = 0
 
-    if ($files.Count -gt 0 -and $foreign.Count -eq 0) {
+foreach ($shared in @(
+    (Join-Path $runtime "shared\Microsoft.NETCore.App\$coreVer"),
+    (Join-Path $runtime "shared\Microsoft.WindowsDesktop.App\$desktopVer"))) {
+
+    Get-ChildItem $shared -Directory | Where-Object { $_.Name -match '^[a-z]{2,3}(-[A-Za-z]{2,4})?$' } | ForEach-Object {
+        $target = Join-Path $localesRoot $_.Name
+        New-Item -ItemType Directory -Force $target | Out-Null
+
+        Get-ChildItem $_.FullName -File | ForEach-Object {
+            Copy-Item $_.FullName (Join-Path $target $_.Name) -Force
+        }
+
         Remove-Item $_.FullName -Recurse -Force
-        $removed++
+        $movedLocales++
     }
 }
 
-Write-Host ("已裁剪 {0} 个未使用语言目录（保留 zh-Hans / zh-Hant / ja）" -f $removed)
+Write-Host ("已归档 {0} 个语言目录到 externals\locales" -f $movedLocales)
 
 Write-Host ("运行时：NETCore {0} / Desktop {1} / fxr {2}" -f $coreVer, $desktopVer, $fxrVer)
+if ($hasConfig) {
+    Copy-Item $configBackup (Join-Path $OutDir 'config') -Recurse -Force
+    Remove-Item $configBackup -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Host "已保留原有 config 目录"
+}
+
 Write-Host ("完成：{0} 个文件，{1:N1} MB" -f `
     (Get-ChildItem $OutDir -Recurse -File).Count, `
     ((Get-ChildItem $OutDir -Recurse -File | Measure-Object Length -Sum).Sum / 1MB))

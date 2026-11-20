@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FwT3V7GfmTU=",
+  "dgSpecHash": "PNnsT54dzec=",
   "success": true,
-  "projectFilePath": "D:\\github_sync\\AngelinaISAssistant\\AngelinaISAssistant.csproj",
+  "projectFilePath": "D:\\1233333\\new_structure\\code\\AngelinaISAssistant.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Angelina\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
     "C:\\Users\\Angelina\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",

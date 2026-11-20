@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
@@ -23,14 +23,12 @@
     <!-- Live assist -->
     <sys:String x:Key="Str.Live.Title">Live Assist</sys:String>
     <sys:String x:Key="Str.Live.Subtitle">Real-time hints and references during an Integrated Strategies run.</sys:String>
-    <sys:String x:Key="Str.Live.EmptyState">No live information yet</sys:String>
     <sys:String x:Key="Str.Preview.Title">Screen Preview</sys:String>
     <sys:String x:Key="Str.Preview.Fps">Preview FPS</sys:String>
 
     <!-- Output log -->
     <sys:String x:Key="Str.Log.Title">Output Log</sys:String>
     <sys:String x:Key="Str.Log.Subtitle">Query and runtime logs appear here in chronological order.</sys:String>
-    <sys:String x:Key="Str.Log.Empty">No log output yet.</sys:String>
 
     <!-- Settings -->
     <sys:String x:Key="Str.Settings.Title">Settings</sys:String>
@@ -44,12 +42,6 @@
     <!-- Connection -->
     <sys:String x:Key="Str.Connection.Title">Connection</sys:String>
     <sys:String x:Key="Str.Connection.Subtitle">Choose how the live assist captures the screen.</sys:String>
-    <sys:String x:Key="Str.Connection.Server">Server address</sys:String>
-    <sys:String x:Key="Str.Connection.Port">Port</sys:String>
-    <sys:String x:Key="Str.Connection.Behavior">Connection behavior</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnect">Reconnect automatically</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnectHint">Try to recover when the connection drops.</sys:String>
-    <sys:String x:Key="Str.Connection.Save">Save connection settings</sys:String>
 
     <!-- Updates -->
     <sys:String x:Key="Str.Update.Title">Updates</sys:String>
@@ -79,7 +71,6 @@
     <sys:String x:Key="Str.Appearance.Title">Appearance</sys:String>
     <sys:String x:Key="Str.Appearance.Subtitle">Choose the color scheme; changes apply immediately.</sys:String>
     <sys:String x:Key="Str.Appearance.Theme">Theme</sys:String>
-    <sys:String x:Key="Str.Appearance.DarkMode">Dark mode</sys:String>
     <sys:String x:Key="Str.Appearance.Note">The whole window and title bar switch together.</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTop">Always on top</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTopHint">Keep this window above other windows.</sys:String>
@@ -146,7 +137,6 @@
     <sys:String x:Key="Str.Confirm.Cancel">Cancel</sys:String>
     <sys:String x:Key="Str.Confirm.Restart">Restart now</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmHeadline">Restart required</sys:String>
-    <sys:String x:Key="Str.SoftwareRender.ConfirmBody">Changing "Use software rendering" only takes effect after a full restart.&#10;This may cause lower performance, UI stutter and high CPU usage.&#10;Restart now?</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine1">Changing "Use software rendering" only takes effect after a full restart.</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine2">This may cause lower performance, UI stutter and high CPU usage.</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine3">Restart now?</sys:String>
@@ -223,4 +213,34 @@
     <sys:String x:Key="Str.Hotkey.OwnerHint">Close this window and press the hotkey within 10 seconds to try identifying the program that owns it.</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerFound">Owning process: {0} (PID {1})</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerUnknown">Could not identify the owner: no other program came to the foreground after the hotkey was pressed; it may have no visible window.</sys:String>
+    <sys:String x:Key="Str.Live.Group.Out">Out of run</sys:String>
+    <sys:String x:Key="Str.Live.RelicRecord">Relic records</sys:String>
+    <sys:String x:Key="Str.Live.StageValues">Stage value calculator</sys:String>
+    <sys:String x:Key="Str.Live.Group.In">In run</sys:String>
+    <sys:String x:Key="Str.Live.BattleAssist">Live battle assist</sys:String>
+    <sys:String x:Key="Str.Live.EnemyHealth">Enemy HP detection</sys:String>
+    <sys:String x:Key="Str.Live.SpecialStage">Special stage assist</sys:String>
+    <sys:String x:Key="Str.Live.Group.Common">General</sys:String>
+    <sys:String x:Key="Str.Live.None">None</sys:String>
+    <sys:String x:Key="Str.Live.BackendUnavailable">Recognition backend unavailable: the models\ppocr models or ONNX Runtime are missing.</sys:String>
+    <sys:String x:Key="Str.Config.MissingHeadline">Settings file missing</sys:String>
+    <sys:String x:Key="Str.Config.MissingBody">config\settings.json was not found, so the built-in defaults were used. Please do not edit or delete the config folder; the app will recreate it automatically.</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedHeadline">Settings file corrupted</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedBody">config\settings.json is corrupted. {0} setting(s) were recovered and the rest were reset to defaults; the original file was backed up as {1}. Please do not edit or delete the config folder.</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableHeadline">Settings file unreadable</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableBody">Failed to read config\settings.json ({0}); the built-in defaults were used. Please do not edit or delete the config folder.</sys:String>
+
+    <!-- Tray icon -->
+    <sys:String x:Key="Str.Tray.Open">Open main window</sys:String>
+    <sys:String x:Key="Str.Tray.Exit">Exit</sys:String>
+
+    <!-- Multiple instances from the same folder -->
+    <sys:String x:Key="Str.Instance.Headline">The app is already running</sys:String>
+    <sys:String x:Key="Str.Instance.Body">Another instance is already running from the same folder (it may be hidden in the "^" tray at the bottom-right). Open it from the tray instead; this copy will not start a second instance.</sys:String>
+    <!-- Enemy stat number format (live assist -> enemy intel) -->
+    <sys:String x:Key="Str.NumberFormat.Label">Number display</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Hint">How calculated enemy stats are shown on the enemy intel overlay: x10,000 with one decimal, scientific notation, or the full number.</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Wan">35.8w (x10,000, 1 decimal)</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Scientific">Scientific (3.58e5)</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Plain">Full number (358000)</sys:String>
 </ResourceDictionary>

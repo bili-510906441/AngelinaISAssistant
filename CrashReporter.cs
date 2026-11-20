@@ -10,7 +10,7 @@ internal static class CrashReporter
     /// <summary>仅用于测试：指定报告根目录，留空则使用 %AppData%\AngelinaISAssistant。</summary>
     internal static string? OverrideRoot { get; set; }
 
-    private static string DataDirectory => OverrideRoot ?? Path.Combine(AppContext.BaseDirectory, "reports");
+    private static string DataDirectory => OverrideRoot ?? Path.Combine(AppContext.BaseDirectory, "config", "reports");
 
     public static string ReportDirectory => DataDirectory;
 

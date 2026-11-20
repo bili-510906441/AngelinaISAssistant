@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -21,6 +22,7 @@ public partial class App : Application
 
         var candidates = new[]
         {
+            Path.Combine(AppContext.BaseDirectory, "externals", name + ".dll"),
             Path.Combine(AppContext.BaseDirectory, "externals", "onnxruntime", name + ".dll"),
             Path.Combine(AppContext.BaseDirectory, "onnxruntime", name + ".dll")
         };
@@ -65,10 +67,41 @@ public partial class App : Application
                 return null;
             }
 
+            // 卫星资源程序集：externals\locales\<culture>\<name>.dll
+            var culture = name.CultureName;
+
+            if (!string.IsNullOrEmpty(culture))
+            {
+                var localesRoot = Path.Combine(AppContext.BaseDirectory, "externals", "locales");
+
+                foreach (var candidate in CultureCandidates(culture))
+                {
+                    var localizedPath = Path.Combine(localesRoot, candidate, simpleName + ".dll");
+
+                    if (File.Exists(localizedPath))
+                    {
+                        return AssemblyLoadContext.Default.LoadFromAssemblyPath(localizedPath);
+                    }
+                }
+            }
+
             var path = Path.Combine(AppContext.BaseDirectory, "externals", simpleName + ".dll");
 
             return File.Exists(path) ? AssemblyLoadContext.Default.LoadFromAssemblyPath(path) : null;
         };
+    }
+
+    /// <summary>从最具体到最宽泛的语言回退：zh-Hant → zh，pt-BR → pt。</summary>
+    private static IEnumerable<string> CultureCandidates(string culture)
+    {
+        yield return culture;
+
+        var dash = culture.IndexOf('-');
+
+        if (dash > 0)
+        {
+            yield return culture[..dash];
+        }
     }
 
     private bool _crashDialogShown;
@@ -98,6 +131,13 @@ public partial class App : Application
             args.SetObserved();
         };
 
+        // 同一目录只允许运行一个实例：第二个实例不创建主界面，只弹「悲报」后退出。
+        if (!SingleInstance.TryAcquire())
+        {
+            ShowDuplicateInstanceNotice(e.Args);
+            Shutdown();
+            return;
+        }
 
         Logger.Configure();
 
@@ -153,7 +193,82 @@ public partial class App : Application
 
         base.OnStartup(e);
 
+        // App.xaml 不再使用 StartupUri：先完成单实例检查等启动校验，再手动创建主窗口，
+        // 这样重复启动的进程根本不会闪出主界面。
+        var window = new MainWindow();
+        MainWindow = window;
+        window.Show();
+
+        Dispatcher.BeginInvoke(new Action(ShowConfigNoticeIfAny), DispatcherPriority.ApplicationIdle);
         Dispatcher.BeginInvoke(new Action(ShowPendingCrashIfAny), DispatcherPriority.ApplicationIdle);
+    }
+
+    /// <summary>同一目录已经有一个实例在运行：只提示并退出，不创建主界面。</summary>
+    private void ShowDuplicateInstanceNotice(string[] args)
+    {
+        try
+        {
+            var dark = !Array.Exists(
+                args,
+                arg => string.Equals(arg, "--light", StringComparison.OrdinalIgnoreCase));
+
+            ThemeManager.Apply(dark);
+            Loc.Apply(Loc.Normalize(CultureInfo.CurrentUICulture.Name), force: true);
+
+            ErrorDialog.ShowMessage(
+                null,
+                Loc.T("Str.Instance.Headline"),
+                Loc.T("Str.Instance.Body"));
+        }
+        catch
+        {
+            // 弹窗失败时直接退出，避免卡住
+        }
+    }
+
+    /// <summary>配置缺失或损坏时，明确告知用户已恢复默认配置，并提醒不要动 config 目录。</summary>
+    private void ShowConfigNoticeIfAny()
+    {
+        var notice = AppSettings.StartupNotice;
+
+        if (notice is null || notice.Issue == ConfigIssue.None)
+        {
+            return;
+        }
+
+        string headlineKey;
+        string bodyKey;
+        object[] args;
+
+        switch (notice.Issue)
+        {
+            case ConfigIssue.Missing:
+                headlineKey = "Str.Config.MissingHeadline";
+                bodyKey = "Str.Config.MissingBody";
+                args = Array.Empty<object>();
+                break;
+
+            case ConfigIssue.Corrupted:
+                headlineKey = "Str.Config.CorruptedHeadline";
+                bodyKey = "Str.Config.CorruptedBody";
+                args = new object[] { notice.RecoveredFields, notice.BackupPath ?? "-" };
+                break;
+
+            default:
+                headlineKey = "Str.Config.UnreadableHeadline";
+                bodyKey = "Str.Config.UnreadableBody";
+                args = new object[] { notice.Error ?? "unknown" };
+                break;
+        }
+
+        try
+        {
+            ErrorDialog.ShowMessage(MainWindow, Loc.T(headlineKey), Loc.F(bodyKey, args));
+        }
+        catch
+        {
+            // 弹窗失败时不影响启动
+        }
     }
 
     private void ShowPendingCrashIfAny()
@@ -197,6 +312,8 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        Logger.Info("application exiting");
+        SingleInstance.Release();
         Logger.Shutdown();
         base.OnExit(e);
     }

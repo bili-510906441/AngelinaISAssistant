@@ -1,12 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using AngelinaISAssistant.Live;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -56,6 +58,7 @@ public partial class MainWindow : Window
     private bool _showAdvanced;
     private MaskOverlayWindow? _maskOverlay;
     private bool _maskOverlayLogged;
+    private TrayIcon? _trayIcon;
     private bool _captureSettling;
     private readonly DispatcherTimer _captureSettleTimer = new() { Interval = TimeSpan.FromSeconds(6) };
     private readonly List<(FrameworkElement Target, Adorner Adorner)> _searchHighlights = new();
@@ -131,6 +134,7 @@ public partial class MainWindow : Window
         SoftwareRenderSwitch.IsChecked = AppSettings.Current.SoftwareRendering;
         BuildCaptureBackendOptions();
         BuildGpuOptions();
+        BuildNumberFormatOptions();
         BuildSettingsIndex();
 
         _showAdvanced = AppSettings.Current.ShowAdvancedSettings;
@@ -155,12 +159,28 @@ public partial class MainWindow : Window
             SetStatus("Str.Status.Unsupported");
         }
 
+        InitializeLiveAssist();
+
         _ready = true;
         Loaded += (_, _) => ThemeManager.ApplyTitleBar(this, ThemeManager.IsDark);
         Closed += (_, _) =>
         {
+            Logger.Info("main window closing");
+
+            StopRevealWait();
+            _trayIcon?.Dispose();
+            _trayIcon = null;
+
             ReleaseCapture();
-            CloseMaskOverlay();
+            Logger.Info("capture released");
+
+            _liveAssist?.Dispose();
+            Logger.Info("live assist disposed");
+
+            // 遮罩窗口平时只是 Hide()（复用实例），这里必须真正 Close()：
+            // 否则它会作为「仍未关闭的窗口」把进程留活（用户点叉号后进程不退出）。
+            DestroyMaskOverlay();
+            Logger.Info("mask overlay destroyed · closing done");
         };
 
         // 程序主动滚动时短暂关闭“滚动联动左侧高亮”，避免小栏目被后续栏目顶掉选中
@@ -170,7 +190,11 @@ public partial class MainWindow : Window
             _suppressScrollSync = false;
         };
 
-        SourceInitialized += (_, _) => InitHotkey();
+        SourceInitialized += (_, _) =>
+        {
+            InitHotkey();
+            ExcludeFromCapture();
+        };
         Closed += (_, _) =>
         {
             _hotkeyWatch.Stop();
@@ -196,18 +220,9 @@ public partial class MainWindow : Window
             }
         };
 
-        // 最小化时收起遮罩，恢复时按采集状态重新判断
-        StateChanged += (_, _) =>
-        {
-            if (WindowState == WindowState.Minimized)
-            {
-                CloseMaskOverlay();
-            }
-            else
-            {
-                UpdateMaskOverlay();
-            }
-        };
+        // 遮罩独立于主窗口状态：最小化 / 恢复都不收起，始终按「采集状态 + 当前页」决定显示，
+        // 这样最小化主窗口后悬浮层仍置顶显示且点击穿透，不影响下层操作。
+        StateChanged += (_, _) => UpdateMaskOverlay();
 
         if (!previewLatest)
         {
@@ -220,6 +235,7 @@ public partial class MainWindow : Window
     {
         UpdateGpuOptionTexts();
         UpdateCaptureBackendTexts();
+        UpdateNumberFormatTexts();
         UpdateCaptureToggleText();
         var prefix = AlwaysOnTopSwitch.IsChecked == true ? Loc.T("Str.Title.AlwaysOnTop") + " " : string.Empty;
         Title = $"{prefix}{Loc.T("Str.App.Name")} - {AppInfo.Version} - {PlatformInfo.Current}";
@@ -447,6 +463,57 @@ public partial class MainWindow : Window
         AppSettings.Current.InferenceGpu = value;
         AppSettings.Save();
         Logger.Info($"inference gpu set to {item.Content}");
+
+        // 让 OCR 后端按新设置重新加载（CPU / DirectML / 回退都在后端里处理）
+        _liveAssist?.ResetBackend();
+        WarmupOcrBackendIfNeeded();
+    }
+
+    // ---- 敌人数值的显示格式（实时辅助：敌方情报）----
+
+    private void BuildNumberFormatOptions()
+    {
+        var items = new List<ComboBoxItem>
+        {
+            new() { Tag = NumberDisplayFormat.Wan, Content = Loc.T("Str.NumberFormat.Wan") },
+            new() { Tag = NumberDisplayFormat.Scientific, Content = Loc.T("Str.NumberFormat.Scientific") },
+            new() { Tag = NumberDisplayFormat.Plain, Content = Loc.T("Str.NumberFormat.Plain") }
+        };
+
+        NumberFormatCombo.ItemsSource = items;
+
+        var current = AppSettings.Current.NumberFormat;
+        NumberFormatCombo.SelectedItem =
+            items.FirstOrDefault(item => item.Tag is NumberDisplayFormat value && value == current) ?? items[0];
+    }
+
+    private void UpdateNumberFormatTexts()
+    {
+        if (NumberFormatCombo.ItemsSource is not List<ComboBoxItem> { Count: >= 3 } items)
+        {
+            return;
+        }
+
+        items[0].Content = Loc.T("Str.NumberFormat.Wan");
+        items[1].Content = Loc.T("Str.NumberFormat.Scientific");
+        items[2].Content = Loc.T("Str.NumberFormat.Plain");
+    }
+
+    private void NumberFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_ready || NumberFormatCombo.SelectedItem is not ComboBoxItem { Tag: NumberDisplayFormat value })
+        {
+            return;
+        }
+
+        if (AppSettings.Current.NumberFormat == value)
+        {
+            return;
+        }
+
+        AppSettings.Current.NumberFormat = value;
+        AppSettings.Save();
+        Logger.Info($"number format set to {value}");
     }
 
     // ---- 采集方式 ----
@@ -515,6 +582,7 @@ public partial class MainWindow : Window
         }
 
         _capture = null;
+        ClearLiveOverlay();
         CloseMaskOverlay();
         _previewBitmap = null;
         PreviewImage.Source = null;
@@ -842,7 +910,8 @@ public partial class MainWindow : Window
             $"Built at {builtAt}",
             $"AISA ENV: {env}",
             $"Command Line: {path}",
-            $"User Dir {AppContext.BaseDirectory.TrimEnd(System.IO.Path.DirectorySeparatorChar)}"
+            $"User Dir {AppContext.BaseDirectory.TrimEnd(System.IO.Path.DirectorySeparatorChar)}",
+            $"main process pid={Environment.ProcessId}"
         });
     }
     private void OnLogAppended()
@@ -1004,6 +1073,15 @@ public partial class MainWindow : Window
                 return;
             }
 
+            // 同一程序的不同副本（不同目录）会争用同一个热键：此时不弹窗打断用户，
+            // 只写日志；对方退出后下一轮检测会自动恢复。
+            if (IsAnotherCopyRunning())
+            {
+                Logger.Warn($"hotkey held by another AngelinaISAssistant copy · {text}");
+                _hotkeyConflictShown = true;
+                return;
+            }
+
             _hotkeyConflictShown = true;
 
             try
@@ -1106,15 +1184,140 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>
+    /// 主窗口也不进入自己的屏幕采集：否则 OCR 会把界面文字（设置项、日志等）识别出来。
+    /// 窗口照常显示，只是不出现在截图/采集里。
+    /// </summary>
+    private void ExcludeFromCapture()
+    {
+        var handle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+
+        if (handle == IntPtr.Zero)
+        {
+            return;
+        }
+
+        if (!SetWindowDisplayAffinity(handle, WdaExcludeFromCapture))
+        {
+            Logger.Warn($"main window capture exclusion failed · err={Marshal.GetLastWin32Error()}");
+        }
+    }
+
     private IntPtr HotkeyWndProc(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
         if (message == 0x0312 && wParam.ToInt32() == HotkeyId)
         {
             ToggleMainWindow();
             handled = true;
+            return IntPtr.Zero;
+        }
+
+        if (message == TrayIcon.CallbackMessage)
+        {
+            HandleTrayMessage(lParam);
+            handled = true;
         }
 
         return IntPtr.Zero;
+    }
+
+    private void HandleTrayMessage(IntPtr lParam)
+    {
+        switch (lParam.ToInt32() & 0xFFFF)
+        {
+            case 0x0202: // WM_LBUTTONUP
+            case 0x0203: // WM_LBUTTONDBLCLK
+                ShowFromTray();
+                break;
+
+            case 0x0205: // WM_RBUTTONUP
+            case 0x007B: // WM_CONTEXTMENU
+                ShowTrayMenu();
+                break;
+        }
+    }
+
+    /// <summary>托盘左键：把主窗口重新显示出来并移除托盘图标。</summary>
+    private void ShowFromTray()
+    {
+        if (IsVisible)
+        {
+            Activate();
+            HideTrayIcon();
+            return;
+        }
+
+        ShowMainWindow();
+
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        UpdateMaskOverlay();
+    }
+
+    /// <summary>托盘右键：打开 / 退出。</summary>
+    private void ShowTrayMenu()
+    {
+        var menu = new ContextMenu();
+
+        var openItem = new MenuItem { Header = Loc.T("Str.Tray.Open") };
+        openItem.Click += (_, _) => ShowFromTray();
+
+        var exitItem = new MenuItem { Header = Loc.T("Str.Tray.Exit") };
+        exitItem.Click += (_, _) =>
+        {
+            HideTrayIcon();
+            Close();
+        };
+
+        menu.Items.Add(openItem);
+        menu.Items.Add(new Separator());
+        menu.Items.Add(exitItem);
+
+        menu.Placement = PlacementMode.MousePoint;
+        menu.IsOpen = true;
+    }
+
+    private void ShowTrayIcon()
+    {
+        try
+        {
+            _trayIcon ??= new TrayIcon(new WindowInteropHelper(this).Handle);
+            var tip = $"{Loc.T("Str.App.Name")} {AppInfo.Version}";
+
+            if (_trayIcon.Show(tip))
+            {
+                Logger.Info("tray icon shown");
+            }
+            else
+            {
+                Logger.Warn("tray icon failed to show");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn($"tray icon failed · {ex.Message}");
+        }
+    }
+
+    private void HideTrayIcon()
+    {
+        if (_trayIcon is not { IsShown: true })
+        {
+            return;
+        }
+
+        try
+        {
+            _trayIcon.Hide();
+            Logger.Info("tray icon hidden");
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn($"tray icon hide failed · {ex.Message}");
+        }
     }
 
     private void ToggleMainWindow()
@@ -1127,30 +1330,139 @@ public partial class MainWindow : Window
 
         if (WindowState == WindowState.Minimized)
         {
-            Show();
+            ShowMainWindow();
             WindowState = WindowState.Normal;
-            Activate();
             UpdateMaskOverlay();
             return;
         }
 
         if (IsVisible && IsActive)
         {
-            CloseMaskOverlay();
+            // 只收起主窗口；遮罩继续留在屏幕最上方（采集未停时），
+            // 同时把图标放进右下角「^」托盘，保证还能用左键重新打开、右键退出。
             Hide();
+            ShowTrayIcon();
         }
         else
         {
-            Show();
+            ShowMainWindow();
 
             if (WindowState == WindowState.Minimized)
             {
                 WindowState = WindowState.Normal;
             }
 
-            Activate();
             UpdateMaskOverlay();
         }
+    }
+
+    private const int DwmwaCloak = 13;
+
+    [DllImport("dwmapi.dll", PreserveSig = true)]
+    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
+
+    private bool _revealPending;
+    private int _revealFrames;
+    private DispatcherTimer? _revealFallback;
+
+    /// <summary>
+    /// 先把窗口 DWM-cloak 再 Show，等 WPF 真正画出一帧后再解除 cloak。
+    /// 窗口隐藏较久后 DWM 会丢弃窗口表面，直接 Show 时会先合成一张纯白表面
+    /// （表现为“白屏一闪”）；cloak 期间用户看不到它，首帧画好后再显示。
+    /// </summary>
+    private void ShowMainWindow()
+    {
+        HideTrayIcon();
+
+        if (!TryCloakWindow(true))
+        {
+            Show();
+            Activate();
+            return;
+        }
+
+        Show();
+        BeginRevealAfterFirstFrame();
+    }
+
+    private void BeginRevealAfterFirstFrame()
+    {
+        if (_revealPending)
+        {
+            return;
+        }
+
+        _revealPending = true;
+        _revealFrames = 0;
+        CompositionTarget.Rendering += OnRevealRendering;
+
+        // 兜底：万一没有渲染回调（例如软件渲染异常），也不要让窗口一直处于 cloak 状态
+        var fallback = new DispatcherTimer(DispatcherPriority.Render)
+        {
+            Interval = TimeSpan.FromMilliseconds(250)
+        };
+        fallback.Tick += (_, _) =>
+        {
+            fallback.Stop();
+            RevealWindow();
+        };
+        fallback.Start();
+        _revealFallback = fallback;
+    }
+
+    private void OnRevealRendering(object? sender, EventArgs e)
+    {
+        if (!_revealPending)
+        {
+            return;
+        }
+
+        // 第一次回调发生在首帧渲染之前，再等一帧，确保窗口表面已经有内容
+        if (++_revealFrames < 2)
+        {
+            InvalidateVisual();
+            return;
+        }
+
+        RevealWindow();
+    }
+
+    private void RevealWindow()
+    {
+        if (!_revealPending)
+        {
+            return;
+        }
+
+        _revealPending = false;
+        StopRevealWait();
+        TryCloakWindow(false);
+        Activate();
+    }
+
+    private void StopRevealWait()
+    {
+        CompositionTarget.Rendering -= OnRevealRendering;
+
+        if (_revealFallback is not null)
+        {
+            _revealFallback.Stop();
+            _revealFallback = null;
+        }
+    }
+
+    private bool TryCloakWindow(bool cloak)
+    {
+        var handle = new WindowInteropHelper(this).Handle;
+
+        if (handle == IntPtr.Zero)
+        {
+            return false;
+        }
+
+        var value = cloak ? 1 : 0;
+
+        return DwmSetWindowAttribute(handle, DwmwaCloak, ref value, sizeof(int)) == 0;
     }
 
     private void HotkeyBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -1244,6 +1556,64 @@ public partial class MainWindow : Window
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+    private const uint WdaExcludeFromCapture = 0x00000011;
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint affinity);
+
+    [DllImport("user32.dll")]
+    private static extern bool EnumWindows(EnumWindowsCallback callback, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder text, int count);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder text, int count);
+
+    private delegate bool EnumWindowsCallback(IntPtr hWnd, IntPtr lParam);
+
+    /// <summary>是否还有另一个本程序副本（不同目录）在运行。</summary>
+    private static bool IsAnotherCopyRunning()
+    {
+        var ownPid = Environment.ProcessId;
+        var found = false;
+
+        EnumWindows((hwnd, _) =>
+        {
+            GetWindowThreadProcessId(hwnd, out var pid);
+
+            if (pid == ownPid)
+            {
+                return true;
+            }
+
+            var cls = new System.Text.StringBuilder(256);
+            GetClassName(hwnd, cls, cls.Capacity);
+
+            if (!cls.ToString().StartsWith("HwndWrapper[AngelinaISAssistant;", StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            var title = new System.Text.StringBuilder(512);
+            GetWindowText(hwnd, title, title.Capacity);
+
+            // 辅助窗口（SystemResourceNotifyWindow 等）没有标题，忽略
+            if (title.Length == 0)
+            {
+                return true;
+            }
+
+            found = true;
+            return false;
+        }, IntPtr.Zero);
+
+        return found;
+    }
 
     private void AdvancedToggle_Click(object sender, RoutedEventArgs e)
     {
@@ -1714,6 +2084,7 @@ public partial class MainWindow : Window
             _frameWidth = 0;
             _frameHeight = 0;
             _framesSinceTick = 0;
+            _ocrBackend?.ResetRunInfo();
             SetStatus("Str.Status.Starting");
             UpdateCaptureToggleText();
             Logger.Info($"capture backend = {AppSettings.Current.CaptureBackend}");
@@ -1734,6 +2105,7 @@ public partial class MainWindow : Window
                          && Pages.Children.Count > LiveAssistPage
                          && Pages.Children[LiveAssistPage].Visibility == Visibility.Visible;
 
+        // 主窗口最小化时用户已经离开实时辅助界面，遮罩不应继续留在桌面最上层
         var shouldShow = onLivePage && _capture is { IsRunning: true };
 
         if (!shouldShow)
@@ -1750,10 +2122,12 @@ public partial class MainWindow : Window
             {
                 _maskOverlay.Show();
 
+                ApplyLiveOverlay();
+
                 if (!_maskOverlayLogged)
                 {
                     _maskOverlayLogged = true;
-                    _maskOverlay.AppendLog("INF", Loc.T("Str.Mask.Shown"));
+                    Logger.Info(Loc.T("Str.Mask.Shown"));
                 }
             }
         }
@@ -1783,6 +2157,28 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>退出程序时真正关闭遮罩窗口（平时只是 Hide 以便复用）。</summary>
+    private void DestroyMaskOverlay()
+    {
+        var overlay = _maskOverlay;
+        _maskOverlay = null;
+        _maskOverlayLogged = false;
+
+        if (overlay is null)
+        {
+            return;
+        }
+
+        try
+        {
+            overlay.Close();
+        }
+        catch
+        {
+            // 退出阶段关闭失败不影响进程结束
+        }
+    }
+
     private void StopCapture()
     {
         if (_capture is not { IsRunning: true })
@@ -1799,6 +2195,7 @@ public partial class MainWindow : Window
 
         FpsBadge.Visibility = Visibility.Collapsed;
         _framesSinceTick = 0;
+        ClearLiveOverlay();
         UpdateMaskOverlay();
         SetCaptureSettling(false);
     }
@@ -1837,6 +2234,11 @@ public partial class MainWindow : Window
 
     private void OnCaptureFrame(byte[] pixels, int width, int height)
     {
+        if (_liveAssist is { IsAvailable: true })
+        {
+            _liveAssist.OfferFrame(pixels, width, height);
+        }
+
         // 采集回调发生在采集线程，任何 UI 操作都必须切回 Dispatcher
         Dispatcher.BeginInvoke(() =>
         {
@@ -1896,6 +2298,7 @@ public partial class MainWindow : Window
         {
             SetStatus("Str.Status.Interrupted");
             SetCaptureSettling(false);
+            ClearLiveOverlay();
             UpdateMaskOverlay();
 
             if (_captureErrorShown)

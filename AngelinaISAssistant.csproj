@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -33,6 +33,11 @@
   <ItemGroup>
   </ItemGroup>
 
+  <!-- 实时辅助「敌人数值」内嵌数据（由 version_tools/generate_intel_data.py 从 tomimi.dev 生成） -->
+  <ItemGroup>
+    <EmbeddedResource Include="Live\Intel\data\*.json" />
+  </ItemGroup>
+
   <!-- 地图与敌人头像：随程序输出到 Resources\ 目录，运行时按需读取 -->
   <ItemGroup>
   </ItemGroup>
@@ -41,6 +46,34 @@
   <ItemGroup>
     <None Include="LICENSE" CopyToOutputDirectory="PreserveNewest" />
     <None Include="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- 实时辅助 OCR 模型：随程序输出/发布到 models\ppocr -->
+  <ItemGroup>
+    <None Update="models\ppocr\PP-OCRv6_small_det.onnx" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Update="models\ppocr\PP-OCRv6_small_rec.onnx" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Update="models\ppocr\keys.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Update="models\ppocr\README.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+
+    <!-- 小体积 GPU 方案：DirectML（约 37 MB），随发布包分发 -->
+    <None Include="libs\onnxruntime_dml\onnxruntime.dll"
+          Link="externals\onnxruntime_dml\onnxruntime.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+    <None Include="libs\onnxruntime_dml\onnxruntime_providers_shared.dll"
+          Link="externals\onnxruntime_dml\onnxruntime_providers_shared.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+    <None Include="libs\onnxruntime_dml\DirectML.dll"
+          Link="externals\onnxruntime_dml\DirectML.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+    <None Include="libs\onnxruntime_dml\*.txt"
+          Link="externals\onnxruntime_dml\%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <!-- 客户端只需要 hpatchz 应用补丁；hdiffz 在 new_structure\version_tools 里，随发布包不分发 -->
@@ -96,11 +129,13 @@
     </ItemGroup>
     <Move SourceFiles="@(ExternalAssembly)" DestinationFolder="$(PublishDir)externals" />
 
-    <MakeDir Directories="$(PublishDir)externals\onnxruntime" />
+    <MakeDir Directories="$(PublishDir)externals" />
     <ItemGroup>
-      <OnnxNative Include="$(PublishDir)onnxruntime\*" />
+      <OnnxDll Include="$(PublishDir)onnxruntime\*.dll" />
+      <OnnxLicense Include="$(PublishDir)onnxruntime\LICENSE.txt" />
     </ItemGroup>
-    <Move SourceFiles="@(OnnxNative)" DestinationFolder="$(PublishDir)externals\onnxruntime" />
+    <Move SourceFiles="@(OnnxDll)" DestinationFolder="$(PublishDir)externals" />
+    <Move SourceFiles="@(OnnxLicense)" DestinationFiles="$(PublishDir)externals\onnxruntime_LICENSE.txt" />
     <RemoveDir Directories="$(PublishDir)onnxruntime" />
   </Target>
 </Project>

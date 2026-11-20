@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime">
     <sys:String x:Key="Str.App.Name">安潔莉娜集成戰略小助手</sys:String>
@@ -10,12 +10,10 @@
     <sys:String x:Key="Str.Runtime.OpenPage">是否現在打開下載頁面？</sys:String>
     <sys:String x:Key="Str.Live.Title">即時輔助</sys:String>
     <sys:String x:Key="Str.Live.Subtitle">在集成戰略對局過程中，查看即時提示與參考資訊。</sys:String>
-    <sys:String x:Key="Str.Live.EmptyState">還沒有可顯示的即時資訊</sys:String>
     <sys:String x:Key="Str.Preview.Title">螢幕預覽</sys:String>
     <sys:String x:Key="Str.Preview.Fps">預覽影格率</sys:String>
     <sys:String x:Key="Str.Log.Title">輸出日誌</sys:String>
     <sys:String x:Key="Str.Log.Subtitle">查詢與執行過程的日誌會按時間順序顯示在這裡。</sys:String>
-    <sys:String x:Key="Str.Log.Empty">暫無日誌輸出。</sys:String>
     <sys:String x:Key="Str.Settings.Title">設定</sys:String>
     <sys:String x:Key="Str.Settings.Search">搜索設定</sys:String>
     <sys:String x:Key="Str.SettingsNav.Connection">連線設定</sys:String>
@@ -25,12 +23,6 @@
     <sys:String x:Key="Str.SettingsNav.About">關於我們</sys:String>
     <sys:String x:Key="Str.Connection.Title">連線設定</sys:String>
     <sys:String x:Key="Str.Connection.Subtitle">選擇即時輔助使用的畫面擷取方式。</sys:String>
-    <sys:String x:Key="Str.Connection.Server">服務位址</sys:String>
-    <sys:String x:Key="Str.Connection.Port">埠</sys:String>
-    <sys:String x:Key="Str.Connection.Behavior">連線行為</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnect">斷線後自動重連</sys:String>
-    <sys:String x:Key="Str.Connection.AutoReconnectHint">連線中斷時自動嘗試恢復。</sys:String>
-    <sys:String x:Key="Str.Connection.Save">儲存連線設定</sys:String>
     <sys:String x:Key="Str.Update.Title">更新設定</sys:String>
     <sys:String x:Key="Str.Update.Subtitle">控制是否自動檢查新版本，以及上次檢查的時間。</sys:String>
     <sys:String x:Key="Str.Update.Auto">自動檢查更新</sys:String>
@@ -56,7 +48,6 @@
     <sys:String x:Key="Str.Appearance.Title">外觀設定</sys:String>
     <sys:String x:Key="Str.Appearance.Subtitle">選擇介面配色，切換後立即生效。</sys:String>
     <sys:String x:Key="Str.Appearance.Theme">主題</sys:String>
-    <sys:String x:Key="Str.Appearance.DarkMode">深色模式</sys:String>
     <sys:String x:Key="Str.Appearance.Note">切換後整個窗口與標題欄會一起變化。</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTop">始終置頂</sys:String>
     <sys:String x:Key="Str.Appearance.AlwaysOnTopHint">讓窗口保持在其他窗口之上。</sys:String>
@@ -113,7 +104,6 @@
     <sys:String x:Key="Str.Confirm.Cancel">取消</sys:String>
     <sys:String x:Key="Str.Confirm.Restart">立即重新啟動</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmHeadline">需要重新啟動套用</sys:String>
-    <sys:String x:Key="Str.SoftwareRender.ConfirmBody">修改「使用軟體渲染」後需要完全重新啟動套用才會生效。&#10;這會導致性能下降、介面卡頓、CPU 佔用率過高等後果。&#10;是否立即重新啟動？</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine1">修改「使用軟體渲染」後需要完全重新啟動套用才會生效。</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine2">這會導致性能下降、介面卡頓、CPU 佔用率過高等後果。</sys:String>
     <sys:String x:Key="Str.SoftwareRender.ConfirmLine3">是否立即重新啟動？</sys:String>
@@ -190,4 +180,33 @@
     <sys:String x:Key="Str.Hotkey.OwnerHint">關閉本視窗後 10 秒內按下該熱鍵，可嘗試識別佔用它的程式。</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerFound">佔用程式：{0}（PID {1}）</sys:String>
     <sys:String x:Key="Str.Hotkey.OwnerUnknown">無法確定佔用者：按下熱鍵後沒有其他程式來到前景，它可能沒有可見視窗。</sys:String>
+    <sys:String x:Key="Str.Live.Group.Out">局外</sys:String>
+    <sys:String x:Key="Str.Live.RelicRecord">收藏品記錄</sys:String>
+    <sys:String x:Key="Str.Live.StageValues">關卡數值計算</sys:String>
+    <sys:String x:Key="Str.Live.Group.In">局內</sys:String>
+    <sys:String x:Key="Str.Live.BattleAssist">即時戰鬥輔助</sys:String>
+    <sys:String x:Key="Str.Live.EnemyHealth">敵人血量偵測</sys:String>
+    <sys:String x:Key="Str.Live.SpecialStage">特殊關卡詳細輔助</sys:String>
+    <sys:String x:Key="Str.Live.Group.Common">通用</sys:String>
+    <sys:String x:Key="Str.Live.None">暫無</sys:String>
+    <sys:String x:Key="Str.Live.BackendUnavailable">識別後端未就緒：缺少 models\ppocr 模型或 ONNX Runtime。</sys:String>
+    <sys:String x:Key="Str.Config.MissingHeadline">設定檔缺失</sys:String>
+    <sys:String x:Key="Str.Config.MissingBody">找不到 config\settings.json，已使用內建預設設定啟動。請不要手動修改或刪除 config 資料夾，程式會自動重建。</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedHeadline">設定檔已損毀</sys:String>
+    <sys:String x:Key="Str.Config.CorruptedBody">設定檔已損毀，已保留可讀取的 {0} 項設定，其餘回復為預設值；原檔案已備份為 {1}。請不要手動修改或刪除 config 資料夾。</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableHeadline">設定檔無法讀取</sys:String>
+    <sys:String x:Key="Str.Config.UnreadableBody">讀取 config\settings.json 時發生錯誤（{0}），已使用內建預設設定啟動。請不要手動修改或刪除 config 資料夾。</sys:String>
+    <!-- 托盤圖示 -->
+    <sys:String x:Key="Str.Tray.Open">開啟主介面</sys:String>
+    <sys:String x:Key="Str.Tray.Exit">結束程式</sys:String>
+
+    <!-- 同目錄多開 -->
+    <sys:String x:Key="Str.Instance.Headline">程式已在執行</sys:String>
+    <sys:String x:Key="Str.Instance.Body">同一目錄下已經有一個本程式在執行（可能是熱鍵隱藏到右下角「^」系統匣裡）。請從系統匣開啟它，這裡不會重複啟動。</sys:String>
+    <!-- 敵人數值顯示格式（即時輔助 → 敵方情報） -->
+    <sys:String x:Key="Str.NumberFormat.Label">數值顯示格式</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Hint">敵方情報頁裡計算出的敵人數值要怎麼顯示：萬（一位小數）、科學記號，或完整數字。</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Wan">35.8w（萬，一位小數）</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Scientific">科學記號（3.58e5）</sys:String>
+    <sys:String x:Key="Str.NumberFormat.Plain">完整數字（358000）</sys:String>
 </ResourceDictionary>

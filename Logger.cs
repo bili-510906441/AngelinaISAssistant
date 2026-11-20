@@ -55,10 +55,7 @@ internal static class Logger
 
     public static event Action? Appended;
 
-    public static string LogDirectory { get; } = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "AngelinaISAssistant",
-        "logs");
+    public static string LogDirectory { get; } = Path.Combine(AppContext.BaseDirectory, "config", "logs");
 
     private static bool _configured;
 
